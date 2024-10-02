@@ -1,6 +1,7 @@
 package com.asmaa.hariti.demo.dao.implementations;
 
 import com.asmaa.hariti.demo.dao.repositories.CreditRequestDAO;
+import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,9 +11,20 @@ import java.util.List;
 public class CreditRequestDAOImpl implements CreditRequestDAO {
     @PersistenceContext
     private EntityManager em;
+
+    public CreditRequestDAOImpl() {
+        this.em = EntityManagerSingleton.getEntityManager();
+    }
+
     @Override
     public CreditRequest save(CreditRequest creditRequest) {
-        em.persist(creditRequest);
+        try{em.getTransaction().begin();
+            em.persist(creditRequest);
+            em.getTransaction().commit();
+            return creditRequest;} catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }
         return creditRequest;
     }
 
@@ -28,16 +40,31 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
     @Override
     public void deleteCreditRequest(String creditRequestId) {
-        CreditRequest creditRequest = getCreditRequest(creditRequestId);
-        if(creditRequest != null) {
-            em.remove(creditRequest);
+        try{
+            em.getTransaction().begin();
+            CreditRequest creditRequest = getCreditRequest(creditRequestId);
+            if(creditRequest != null) {
+                em.remove(creditRequest);
+            }
+            em.getTransaction().commit();
+        } catch(Exception e){
+            em.getTransaction().rollback();
+            e.printStackTrace();
         }
 
     }
 
     @Override
     public void updateCreditRequest(CreditRequest creditRequest) {
-        em.merge(creditRequest);
+        try {
+            em.getTransaction().begin();
+            em.merge(creditRequest);
+            em.getTransaction().commit();
+
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }
 
     }
 }
