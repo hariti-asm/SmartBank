@@ -10,7 +10,7 @@ public class CreditRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Change to Long for the ID type (more typical)
+    private String id; // Change to Long for the ID type (more typical)
 
     @Column(name = "customer_name", nullable = false, length = 100)
     private String customerName;
@@ -54,11 +54,13 @@ public class CreditRequest {
         this.email = email;
     }
 
-    public Long getId() {
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

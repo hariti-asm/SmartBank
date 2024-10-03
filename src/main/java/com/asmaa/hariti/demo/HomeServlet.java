@@ -33,13 +33,7 @@ public class HomeServlet extends HttpServlet {
         String amount = request.getParameter("amount");
         String duration = request.getParameter("duration");
 
-        // Process the input data
-        out.println("<html><body>");
-        out.println("<h2>Your Loan Simulation</h2>");
-        out.println("<p>Project: " + project + "</p>");
-        out.println("<p>Status: " + status + "</p>");
-        out.println("<p>Amount: " + amount + "</p>");
-        out.println("<p>Duration: " + duration + " months</p>");
-        out.println("</body></html>");
+        response.sendRedirect(request.getContextPath() + "/coordinates");
+
     }
 }

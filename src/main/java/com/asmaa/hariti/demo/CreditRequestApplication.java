@@ -82,11 +82,7 @@ public class CreditRequestApplication {
 
     private static CreditRequest createNewCreditRequest() {
         return new CreditRequest(
-                "John Doe",
-                new BigDecimal("25000.00"),
-                LocalDate.now(),
-                36,
-                new BigDecimal("5.75")
+
         );
     }
 
