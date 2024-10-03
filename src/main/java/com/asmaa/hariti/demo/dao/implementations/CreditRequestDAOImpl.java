@@ -18,15 +18,16 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
     @Override
     public CreditRequest save(CreditRequest creditRequest) {
-        try{em.getTransaction().begin();
+        try {
             em.persist(creditRequest);
-            em.getTransaction().commit();
-            return creditRequest;} catch (Exception e) {
+            return creditRequest;
+        } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
         return creditRequest;
     }
+
 
     @Override
     public CreditRequest getCreditRequest(String creditRequestId) {

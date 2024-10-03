@@ -1,26 +1,40 @@
 package com.asmaa.hariti.demo;
 
 import com.asmaa.hariti.demo.dao.implementations.CreditRequestDAOImpl;
+import com.asmaa.hariti.demo.helpers.CreditRequestValidator;
 import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
+
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class CreditRequestApplication {
 
     private static final CreditRequestDAOImpl creditRequestDAO = new CreditRequestDAOImpl();
 
     public static void main(String[] args) {
-        EntityManagerSingleton.getEntityManager().getTransaction().begin();
+        EntityManager entityManager = EntityManagerSingleton.getEntityManager();
+        entityManager.getTransaction().begin();
 
         System.out.println("Creating a new Credit Request...");
 
         CreditRequest newRequest = createNewCreditRequest();
+
+        List<String> validationErrors = CreditRequestValidator.validate(newRequest);
+
+        if (!validationErrors.isEmpty()) {
+            System.out.println("Credit request contains errors:");
+            validationErrors.forEach(System.out::println);
+            entityManager.getTransaction().rollback();
+            entityManager.close();
+            return;
+        }
+
         CreditRequest savedRequest = creditRequestDAO.save(newRequest);
+        entityManager.getTransaction().commit();
 
         System.out.println("Credit request submitted successfully!");
         System.out.println("Request ID: " + savedRequest.getId());
@@ -30,6 +44,8 @@ public class CreditRequestApplication {
         System.out.println("Term: " + savedRequest.getTerm() + " months");
         System.out.println("Interest Rate: " + savedRequest.getInterestRate() + "%");
         System.out.println("Status: " + savedRequest.getStatus());
+
+        entityManager.close();
     }
 
     private static CreditRequest createNewCreditRequest() {
@@ -41,5 +57,4 @@ public class CreditRequestApplication {
                 new BigDecimal("5.75")
         );
     }
-
 }
