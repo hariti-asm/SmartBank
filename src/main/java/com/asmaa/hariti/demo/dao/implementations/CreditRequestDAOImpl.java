@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CreditRequestDAOImpl implements CreditRequestDAO {
     @PersistenceContext
@@ -25,13 +26,13 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
-        return creditRequest;
+        return null;
     }
 
-
     @Override
-    public CreditRequest getCreditRequest(String creditRequestId) {
-        return em.find(CreditRequest.class , creditRequestId);
+    public Optional<CreditRequest> getCreditRequest(String creditRequestId) {
+        CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
+        return Optional.ofNullable(creditRequest);
     }
 
     @Override
@@ -41,31 +42,36 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
     @Override
     public void deleteCreditRequest(String creditRequestId) {
-        try{
-            em.getTransaction().begin();
-            CreditRequest creditRequest = getCreditRequest(creditRequestId);
-            if(creditRequest != null) {
-                em.remove(creditRequest);
-            }
-            em.getTransaction().commit();
-        } catch(Exception e){
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void updateCreditRequest(CreditRequest creditRequest) {
         try {
             em.getTransaction().begin();
-            em.merge(creditRequest);
+            Optional<CreditRequest> creditRequest = getCreditRequest(creditRequestId);
+            if (creditRequest != null) {
+                em.remove(creditRequest);
+            } else {
+                System.out.println("CreditRequest not found for ID: " + creditRequestId);
+            }
             em.getTransaction().commit();
-
         } catch (Exception e) {
             em.getTransaction().rollback();
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void updateCreditRequest(CreditRequest creditRequest) {
+        if (creditRequest == null) {
+            throw new IllegalArgumentException("CreditRequest cannot be null");
+        }
+
+        try {
+            em.getTransaction().begin();
+            em.merge(creditRequest);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        }
     }
 }

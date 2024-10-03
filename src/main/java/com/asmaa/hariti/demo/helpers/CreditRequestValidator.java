@@ -5,8 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class CreditRequestValidator {
+
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^(07|06)\\d{8}$"); // Regex for phone validation
 
     public static List<String> validate(CreditRequest creditRequest) {
         List<String> errors = new ArrayList<>();
@@ -16,6 +19,8 @@ public class CreditRequestValidator {
         validateRequestDate(creditRequest.getRequestDate(), errors);
         validateTerm(creditRequest.getTerm(), errors);
         validateInterestRate(creditRequest.getInterestRate(), errors);
+        validatePhone(creditRequest.getPhone(), errors);
+        validateEmail(creditRequest.getEmail(), errors);
 
         return errors;
     }
@@ -62,5 +67,26 @@ public class CreditRequestValidator {
         } else if (interestRate.compareTo(new BigDecimal("100")) > 0) {
             errors.add("Interest rate cannot exceed 100%");
         }
+    }
+
+    private static void validatePhone(String phone, List<String> errors) {
+        if (phone == null || phone.trim().isEmpty()) {
+            errors.add("Phone number is required");
+        } else if (!PHONE_PATTERN.matcher(phone).matches()) {
+            errors.add("Phone number must start with 07 or 06 and contain exactly 10 digits");
+        }
+    }
+
+    private static void validateEmail(String email, List<String> errors) {
+        if (email == null || email.trim().isEmpty()) {
+            errors.add("Email is required");
+        } else if (!isValidEmail(email)) {
+            errors.add("Invalid email format");
+        }
+    }
+
+    private static boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        return email.matches(emailRegex);
     }
 }

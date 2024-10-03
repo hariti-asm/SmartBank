@@ -10,7 +10,7 @@ public class CreditRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // Change to Long for the ID type (more typical)
 
     @Column(name = "customer_name", nullable = false, length = 100)
     private String customerName;
@@ -31,18 +31,27 @@ public class CreditRequest {
     @Column(nullable = false, length = 20)
     private String status;
 
+    // New fields for phone and email
+    @Column(name = "phone", nullable = false, length = 15) // Adjust length based on expected format
+    private String phone;
+
+    @Column(name = "email", nullable = false, length = 100) // Adjust length as needed
+    private String email;
+
     // Default constructor
     public CreditRequest() {
         this.status = "PENDING";
     }
 
-    public CreditRequest(String customerName, BigDecimal amount, LocalDate requestDate, Integer term, BigDecimal interestRate) {
+    public CreditRequest(String customerName, BigDecimal amount, LocalDate requestDate, Integer term, BigDecimal interestRate, String phone, String email) {
         this();
         this.customerName = customerName;
         this.amount = amount;
         this.requestDate = requestDate;
         this.term = term;
         this.interestRate = interestRate;
+        this.phone = phone;
+        this.email = email;
     }
 
     public Long getId() {
@@ -99,6 +108,22 @@ public class CreditRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void approve() {
