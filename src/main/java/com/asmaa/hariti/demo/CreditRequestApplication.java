@@ -53,10 +53,7 @@ public class CreditRequestApplication {
                 System.out.println("Credit request with ID " + savedRequest.getId() + " not found.");
             }
 
-            System.out.println("\n=== Updating the Credit Request ===");
-            savedRequest.setAmount(new BigDecimal("30000.00"));
-            savedRequest.setInterestRate(new BigDecimal("6.25"));
-            creditRequestDAO.updateCreditRequest(savedRequest);
+
 
             Optional<CreditRequest> updatedRequest = creditRequestDAO.getCreditRequest(savedRequest.getId());
             System.out.println("Updated Credit Request:");
@@ -89,8 +86,6 @@ public class CreditRequestApplication {
     public static void printCreditRequest(Optional<CreditRequest> request) {
         if (request.isPresent()) {
             System.out.println("Request ID: " + request.get().getId());
-            System.out.println("Customer Name: " + request.get().getCustomerName());
-            System.out.println("Amount: $" + request.get().getAmount());
             System.out.println("Request Date: " + request.get().getRequestDate());
             System.out.println("Term: " + request.get().getTerm() + " months");
             System.out.println("Interest Rate: " + request.get().getInterestRate() + "%");
