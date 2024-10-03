@@ -1,6 +1,8 @@
 package com.asmaa.hariti.demo.model.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -10,51 +12,87 @@ public class CreditRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id; // Change to Long for the ID type (more typical)
+    private String id;
 
-    @Column(name = "customer_name", nullable = false, length = 100)
-    private String customerName;
+    @NotBlank(message = "First name is required")
+    @Size(max = 100, message = "First name must not exceed 100 characters")
+    @Column(name = "first_name", nullable = false, length = 100)
+    private String firstName;
 
+    @NotBlank(message = "Last name is required")
+    @Size(max = 100, message = "Last name must not exceed 100 characters")
+    @Column(name = "last_name", nullable = false, length = 100)
+    private String lastName;
+
+    @NotBlank(message = "CIN is required")
+    @Size(max = 20, message = "CIN must not exceed 20 characters")
+    @Column(name = "cin", nullable = false, length = 20)
+    private String cin;
+
+    @NotNull(message = "Birthdate is required")
+    @Past(message = "Birthdate must be in the past")
+    @Column(name = "birthdate", nullable = false)
+    private LocalDate birthdate;
+
+    @NotNull(message = "Work date is required")
+    @PastOrPresent(message = "Work date must not be in the future")
+    @Column(name = "work_date", nullable = false)
+    private LocalDate workDate;
+
+    @NotNull(message = "Revenues are required")
+    @PositiveOrZero(message = "Revenues must be positive or zero")
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
+    private BigDecimal revenues;
 
+    @NotNull(message = "Request date is required")
+    @PastOrPresent(message = "Request date must not be in the future")
     @Column(name = "request_date", nullable = false)
     private LocalDate requestDate;
 
+    @NotNull(message = "Term is required")
+    @Positive(message = "Term must be positive")
     @Column(nullable = false)
     private Integer term;
 
+    @NotNull(message = "Interest rate is required")
+    @PositiveOrZero(message = "Interest rate must be positive or zero")
+    @DecimalMax(value = "100.00", message = "Interest rate must not exceed 100%")
     @Column(name = "interest_rate", nullable = false, precision = 5, scale = 2)
     private BigDecimal interestRate;
 
-    // Status is now just a text field
+    @NotBlank(message = "Status is required")
     @Column(nullable = false, length = 20)
     private String status;
 
-    // New fields for phone and email
-    @Column(name = "phone", nullable = false, length = 15) // Adjust length based on expected format
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits")
+    @Column(name = "phone", nullable = false, length = 15)
     private String phone;
 
-    @Column(name = "email", nullable = false, length = 100) // Adjust length as needed
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    // Default constructor
+
     public CreditRequest() {
         this.status = "PENDING";
     }
 
-    public CreditRequest(String customerName, BigDecimal amount, LocalDate requestDate, Integer term, BigDecimal interestRate, String phone, String email) {
+    public CreditRequest(String firstName, String lastName, String cin, LocalDate birthdate, LocalDate workDate, BigDecimal revenues, LocalDate requestDate, Integer term, BigDecimal interestRate, String phone, String email) {
         this();
-        this.customerName = customerName;
-        this.amount = amount;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.cin = cin;
+        this.birthdate = birthdate;
+        this.workDate = workDate;
+        this.revenues = revenues;
         this.requestDate = requestDate;
         this.term = term;
         this.interestRate = interestRate;
         this.phone = phone;
         this.email = email;
     }
-
-
 
     public String getId() {
         return id;
@@ -64,20 +102,52 @@ public class CreditRequest {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getCin() {
+        return cin;
+    }
+
+    public void setCin(String cin) {
+        this.cin = cin;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public LocalDate getWorkDate() {
+        return workDate;
+    }
+
+    public void setWorkDate(LocalDate workDate) {
+        this.workDate = workDate;
+    }
+
+    public BigDecimal getRevenues() {
+        return revenues;
+    }
+
+    public void setRevenues(BigDecimal revenues) {
+        this.revenues = revenues;
     }
 
     public LocalDate getRequestDate() {

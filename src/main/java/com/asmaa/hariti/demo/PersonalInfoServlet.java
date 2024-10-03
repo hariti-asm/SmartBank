@@ -1,48 +1,38 @@
 package com.asmaa.hariti.demo;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "personalInfoServlet", value = "/personalInfo")
 public class PersonalInfoServlet extends HttpServlet {
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("</body></html>");
-        request.getRequestDispatcher("/personnal_info.jsp").forward(request, response);
+        // Retrieve all data from session
+        HttpSession session = request.getSession();
 
-    }
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html; charset=UTF-8");
+        String project = (String) session.getAttribute("project");
+        String status = (String) session.getAttribute("status");
+        String amount = (String) session.getAttribute("amount");
+        String duration = (String) session.getAttribute("duration");
 
-        String civilite = request.getParameter("civilite");
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
-        String cin = request.getParameter("cin");
-        String dateNaissance = request.getParameter("date-naissance");
-        String dateEmbauche = request.getParameter("date-embauche");
-        String revenus = request.getParameter("revenus");
-        String creditsEnCours = request.getParameter("credits-en-cours");
-        String conditions = request.getParameter("conditions");
+        String email = (String) session.getAttribute("email");
+        String phone = (String) session.getAttribute("phone");
 
+        // Pass the data to the JSP page for display
+        request.setAttribute("project", project);
+        request.setAttribute("status", status);
+        request.setAttribute("amount", amount);
+        request.setAttribute("duration", duration);
+        request.setAttribute("email", email);
+        request.setAttribute("phone", phone);
 
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>Données reçues</h1>");
-        out.println("<p>Civilité: " + civilite + "</p>");
-        out.println("<p>Nom: " + nom + "</p>");
-        out.println("<p>Prénom: " + prenom + "</p>");
-        out.println("<p>Numéro CIN: " + cin + "</p>");
-        out.println("<p>Date de naissance: " + dateNaissance + "</p>");
-        out.println("<p>Date d'embauche: " + dateEmbauche + "</p>");
-        out.println("<p>Revenus: " + revenus + " DH</p>");
-        out.println("<p>Crédits en cours: " + creditsEnCours + "</p>");
-        out.println("<p>Conditions acceptées: " + (conditions != null ? "Oui" : "Non") + "</p>");
-        out.println("</body></html>");
+        // Forward to personalInfo.jsp
+        request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
     }
 }
