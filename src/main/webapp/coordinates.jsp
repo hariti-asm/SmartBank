@@ -1,48 +1,38 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: asmaa
-  Date: 3/10/2024
-  Time: 11:03
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demander mon crédit en ligne</title>
-    <link rel="stylesheet" href="cordinates.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/coordinates.css">
 </head>
 <body>
 <div class="container">
     <header class="header">
-        <div class="breadcrumb">Accueil / Demander mon crédit en ligne</div>
+        <div class="breadcrumb">
+            <span class="back-link">← Retour</span>
+            Accueil / Demander mon crédit en ligne
+        </div>
         <h1>Demander mon crédit en ligne</h1>
     </header>
 
     <main class="main-content">
         <section class="form-section">
             <div class="steps">
-                <div class="step">1<br>Simuler mon crédit</div>
+                <div class="step completed">1<br>Simuler mon crédit</div>
                 <div class="step active">2<br>Mes coordonnées</div>
                 <div class="step">3<br>Mes infos personnelles</div>
             </div>
 
-            <form id="creditForm" method="post" action="coordinateServlet">
+            <form id="creditForm" method="post" action="${pageContext.request.contextPath}/coordinates">
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Email*" required>
+                    <input type="email" id="email" name="email" placeholder="Email*" required>
                 </div>
                 <div class="form-group">
-                    <input type="tel" id="phone" placeholder="Téléphone mobile*" required>
+                    <input type="tel" id="phone" name="phone" placeholder="Téléphone mobile*" required>
                 </div>
 
-                <div class="captcha">
-                    <label>
-                        <input type="checkbox" id="captcha" required> Je ne suis pas un robot
-                    </label>
-                </div>
                 <button type="submit" class="submit-btn">Continuer<br>Sans engagement</button>
                 <div class="footer">
                     <p>Simulation à titre indicatif et non contractuelle. La mensualité minimale est de 180 dirhams. Un client Wafasalaf peut bénéficier d'une tarification plus avantageuse en fonction de ses conditions préférentielles.</p>
@@ -54,27 +44,28 @@
         <aside class="summary-section">
             <h2>Mon récapitulatif</h2>
             <div class="summary-content">
-                <p>Mon projet</p>
-                <p class="project-type">Prêt Personnel</p>
+                <h3>Mon projet</h3>
+                <p id="project"></p>
+                <h3>Détails de mon crédit</h3>
                 <div class="summary-item">
                     <span class="label">Vous êtes:</span>
-                    <span class="value" id="userStatus">Fonctionnaire</span>
+                    <span class="value" id="status"></span>
                 </div>
                 <div class="summary-item">
                     <span class="label">Montant:</span>
-                    <span class="value" id="amount">296 000 DH</span>
+                    <span class="value" id="amount"></span>
                 </div>
                 <div class="summary-item">
                     <span class="label">Durée:</span>
-                    <span class="value" id="duration">54 mois</span>
+                    <span class="value" id="duration"></span>
                 </div>
                 <div class="summary-item">
                     <span class="label">Mensualité:</span>
-                    <span class="value" id="monthlyPayment">6 642,50 DH</span>
+                    <span class="value" id="monthlyPayment"> DH</span>
                 </div>
                 <div class="summary-item">
                     <span class="label">Frais de dossier:</span>
-                    <span class="value" id="frais-dossier-output">6 512,00 DH</span>
+                    <span class="value" id="frais-dossier-output"> DH</span>
                 </div>
             </div>
         </aside>
@@ -87,6 +78,8 @@
     </div>
     <button class="close-btn">Fermer</button>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/coordinate.js"></script>
+
 
 </body>
 </html>

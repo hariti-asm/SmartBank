@@ -1,0 +1,202 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.main-header {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.main-header .top-nav {
+    background-color: #f7e752;
+    padding: 10px 0;
+}
+.main-header .top-nav ul {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+}
+.main-header .top-nav ul li {
+    margin: 0 10px;
+}
+.main-header .top-nav ul li a {
+    color: #333;
+    text-decoration: none;
+}
+.main-header .top-nav ul li a:hover {
+    text-decoration: underline;
+}
+.main-header .main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+.main-header .main-nav .logo {
+    height: 50px;
+}
+.main-header .main-nav nav ul {
+    display: flex;
+    list-style-type: none;
+}
+.main-header .main-nav nav ul li {
+    margin: 0 15px;
+}
+.main-header .main-nav nav ul li a {
+    color: #333;
+    text-decoration: none;
+}
+.main-header .main-nav nav ul li a:hover {
+    color: #02afbc;
+}
+.main-header .main-nav .mon-compte {
+    background-color: #02afbc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.main-header .main-nav .mon-compte:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.main-content .breadcrumb {
+    margin-bottom: 20px;
+    color: #666;
+}
+.main-content h1 {
+    color: #02afbc;
+    margin-bottom: 30px;
+}
+.main-content .back-button {
+    color: #02afbc;
+    text-decoration: none;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.application-container {
+    display: flex;
+    gap: 40px;
+}
+.application-container .steps {
+    display: flex;
+    margin-bottom: 30px;
+}
+.application-container .steps .step {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background-color: #f5f5f5;
+}
+.application-container .steps .step.completed {
+    background-color: #02afbc;
+    color: #fff;
+}
+.application-container .steps .step.active {
+    background-color: #f7e752;
+}
+
+.credit-form {
+    flex: 2;
+}
+.credit-form .form-group {
+    margin-bottom: 20px;
+}
+.credit-form .form-group input[type=text],
+.credit-form .form-group input[type=number],
+.credit-form .form-group input[type=date] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.credit-form .form-group .radio-group {
+    display: flex;
+    gap: 20px;
+}
+.credit-form .checkbox-group {
+    display: flex;
+    align-items: flex-start;
+}
+.credit-form .checkbox-group input[type=checkbox] {
+    margin-right: 10px;
+}
+.credit-form .form-actions {
+    display: flex;
+    gap: 20px;
+}
+.credit-form .form-actions .btn-primary {
+    background-color: #02afbc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.credit-form .form-actions .btn-primary:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+.credit-form .form-actions .btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.credit-form .form-actions .btn-secondary:hover {
+    background-color: gray;
+    transform: scale(1.05);
+}
+
+.summary {
+    flex: 1;
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 5px;
+}
+.summary h2 {
+    color: #02afbc;
+    margin-bottom: 20px;
+}
+.summary .summary-content h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.summary .summary-content dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+}
+.summary .summary-content dl dt {
+    font-weight: bold;
+}
+.summary .summary-content dl dd {
+    margin: 0;
+}
+
+.page-footer {
+    margin-top: 40px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.site-footer {
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-top: 40px;
+}
+

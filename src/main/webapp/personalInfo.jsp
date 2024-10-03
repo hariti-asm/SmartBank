@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demander mon crédit en ligne - Wafasalaf</title>
-    <link rel="stylesheet" href="personnal_info.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/personnal_info.css">
 </head>
 <body>
 
@@ -41,7 +41,7 @@
             <div class="form-group">
                 <label>Civilité</label>
                 <div class="radio-group">
-                    <input type="radio" id="madame" name="civilite" value="Madame" checked>
+                    <input type="radio" id="madame" name="civility" value="Madame" checked>
                     <label for="madame">Madame</label>
                     <input type="radio" id="mademoiselle" name="civilite" value="Mademoiselle">
                     <label for="mademoiselle">Mademoiselle</label>
@@ -51,11 +51,11 @@
             </div>
 
             <div class="form-group">
-                <input type="text" id="nom" name="nom" placeholder="Nom*" required>
+                <input type="text" id="nom" name="firstName" placeholder="Nom*" required>
             </div>
 
             <div class="form-group">
-                <input type="text" id="prenom" name="prenom" placeholder="Prénom*" required>
+                <input type="text" id="prenom" name="lastName" placeholder="Prénom*" required>
             </div>
 
             <div class="form-group">
@@ -63,12 +63,12 @@
             </div>
 
             <div class="form-group">
-                <input type="date" id="date-naissance" name="date-naissance" required>
+                <input type="date" id="date-naissance" name="birthdate" required>
                 <label for="date-naissance">Date de naissance*</label>
             </div>
 
             <div class="form-group">
-                <input type="date" id="date-embauche" name="date-embauche" required>
+                <input type="date" id="date-embauche" name="workdate" required>
                 <label for="date-embauche">Date d'embauche/début de l'activité*</label>
             </div>
 
@@ -105,7 +105,7 @@
                 <dl>
                     <dt>Email:${email}</dt>
                     <dd></dd>
-                    <dt>Téléphone:${phone}</dt>
+                    <dt>Téléphone:${phone   }</dt>
                     <dd></dd>
                 </dl>
                 <h3>Détails de mon crédit</h3>
@@ -135,7 +135,7 @@
 </main>
 
 <script src ="./javascript/personnal_info.js"></script>
-
+<script src ="./javascript/coordinate.js"></script>
 
 </body>
 </html>
