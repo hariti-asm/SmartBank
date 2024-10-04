@@ -59,10 +59,11 @@ public class CreditRequest {
     @DecimalMax(value = "100.00", message = "Interest rate must not exceed 100%")
     @Column(name = "interest_rate", nullable = false, precision = 5, scale = 2)
     private BigDecimal interestRate;
-
-    @NotBlank(message = "Status is required")
-    @Column(nullable = false, length = 20)
-    private String status;
+//join tables syntax
+    @NotNull(message = "Status is required")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "status_id", nullable = false)
+    private CreditStatus status;
 
     @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits")
@@ -74,13 +75,12 @@ public class CreditRequest {
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-
     public CreditRequest() {
-        this.status = "PENDING";
     }
 
-    public CreditRequest(String firstName, String lastName, String cin, LocalDate birthdate, LocalDate workDate, BigDecimal revenues, LocalDate requestDate, Integer term, BigDecimal interestRate, String phone, String email) {
-        this();
+    public CreditRequest(String firstName, String lastName, String cin, LocalDate birthdate, LocalDate workDate,
+                         BigDecimal revenues, LocalDate requestDate, Integer term, BigDecimal interestRate,
+                         CreditStatus status, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cin = cin;
@@ -90,9 +90,11 @@ public class CreditRequest {
         this.requestDate = requestDate;
         this.term = term;
         this.interestRate = interestRate;
+        this.status = status;
         this.phone = phone;
         this.email = email;
     }
+
 
     public String getId() {
         return id;
@@ -174,11 +176,11 @@ public class CreditRequest {
         this.interestRate = interestRate;
     }
 
-    public String getStatus() {
+    public CreditStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(CreditStatus status) {
         this.status = status;
     }
 
@@ -198,11 +200,11 @@ public class CreditRequest {
         this.email = email;
     }
 
-    public void approve() {
-        this.status = "APPROVED";
+    public void approve(CreditStatus approvedStatus) {
+        this.status = approvedStatus;
     }
 
-    public void reject() {
-        this.status = "REJECTED";
+    public void reject(CreditStatus rejectedStatus) {
+        this.status = rejectedStatus;
     }
 }
