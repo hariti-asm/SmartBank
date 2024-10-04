@@ -45,11 +45,11 @@
             <h2>Mon récapitulatif</h2>
             <div class="summary-content">
                 <h3>Mon projet</h3>
-                <p id="project"></p>
+                <p id="project"> ${project}</p>
                 <h3>Détails de mon crédit</h3>
                 <div class="summary-item">
                     <span class="label">Vous êtes:</span>
-                    <span class="value" id="status"></span>
+                    <span class="value" id="status"> ${status}</span>
                 </div>
                 <div class="summary-item">
                     <span class="label">Montant:</span>

@@ -111,7 +111,7 @@
                 <h3>Détails de mon crédit</h3>
                 <dl>
                     <dt>Vous êtes:</dt>
-                    <dd></dd>
+                    <dd> ${status}</dd>
                     <dt>Montant: ${amount}</dt>
                     <dd></dd>
                     <dt>Durée: ${duration}</dt>
@@ -134,8 +134,7 @@
 
 </main>
 
-<script src ="./javascript/personnal_info.js"></script>
-<script src ="./javascript/coordinate.js"></script>
+
 
 </body>
 </html>

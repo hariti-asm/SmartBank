@@ -122,34 +122,50 @@ body {
 }
 
 .summary-section {
-    background-color: #ffffff;
+    background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     width: 300px;
-    margin: 20px auto;
+    overflow: hidden;
 }
-
 .summary-section h2 {
-    font-size: 24px;
+    background-color: #f8f9fa;
     color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+    margin: 0;
+    padding: 20px;
+    font-size: 1.5em;
+    border-bottom: 1px solid #e0e0e0;
 }
-
 .summary-content {
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    padding: 15px;
+    padding: 20px;
 }
-
-.summary-content p {
-    color: #02AFBC;
+.summary-content h3 {
+    color: #666;
+    font-size: 1.1em;
+    margin: 10px 0 5px;
+}
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.label {
+    color: #666;
+}
+.value {
+    color: #2196F3;
     font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 5px;
 }
-
+#project {
+    color: #2196F3;
+    font-weight: bold;
+    margin: 0 0 15px;
+}
+.zigzag {
+    height: 15px;
+    background: linear-gradient(45deg, transparent 33.333%, white 33.333%, white 66.667%, transparent 66.667%), linear-gradient(-45deg, transparent 33.333%, white 33.333%, white 66.667%, transparent 66.667%);
+    background-size: 20px 30px;
+    background-color: #f0f0f0;
 .project-type {
     color: #333;
     font-weight: normal;
@@ -232,6 +248,5 @@ body {
     width: 100%;
     max-width: 100px;
     float: right;
-}
+}}
 
-/*# sourceMappingURL=cordinates.css.map */
