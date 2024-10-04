@@ -19,13 +19,20 @@ import java.time.LocalDate;
 @WebServlet(name = "personalInfoServlet", value = "/personalInfo")
 public class PersonalInfoServlet extends HttpServlet {
 
-    private final CreditRequestService creditRequestService;
-
+    private CreditRequestService creditRequestService;
+    public PersonalInfoServlet() {
+    }
     @Inject
     public PersonalInfoServlet(CreditRequestService creditRequestService) {
         this.creditRequestService = creditRequestService;
     }
-
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        if (creditRequestService == null) {
+            creditRequestService = new CreditRequestService();
+        }
+    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
