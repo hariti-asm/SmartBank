@@ -1,80 +1,51 @@
 package com.asmaa.hariti.demo.dao.implementations;
 
 import com.asmaa.hariti.demo.dao.repositories.CreditStatusDAO;
-import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Dependent
 public class CreditStatusDAOImpl implements CreditStatusDAO {
 
     @PersistenceContext
     private EntityManager em;
 
-    public CreditStatusDAOImpl() {
-        this.em = EntityManagerSingleton.getEntityManager();
-    }
-
     @Override
+    @Transactional
     public CreditStatus save(CreditStatus creditStatus) {
-        try {
-            em.getTransaction().begin();
-            em.persist(creditStatus);
-            em.getTransaction().commit();
-            return creditStatus;
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        }
-        return null;
+        em.persist(creditStatus);
+        return creditStatus;
     }
 
     @Override
     public Optional<CreditStatus> getCreditStatus(String creditStatusId) {
-        CreditStatus creditStatus = em.find(CreditStatus.class, creditStatusId);
-        return Optional.ofNullable(creditStatus);
+        return Optional.ofNullable(em.find(CreditStatus.class, creditStatusId));
     }
 
     @Override
-    public List<CreditStatus> getAllCreditRequests() {
+    public List<CreditStatus> getAllCreditStatuses() {
         return em.createQuery("SELECT cs FROM CreditStatus cs", CreditStatus.class).getResultList();
     }
 
     @Override
+    @Transactional
     public void deleteCreditStatus(String creditStatusId) {
-        try {
-            em.getTransaction().begin();
-            CreditStatus creditStatus = em.find(CreditStatus.class, creditStatusId);
-            if (creditStatus != null) {
-                em.remove(creditStatus);
-            } else {
-                System.out.println("CreditStatus not found for ID: " + creditStatusId);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
+        CreditStatus creditStatus = em.find(CreditStatus.class, creditStatusId);
+        if (creditStatus != null) {
+            em.remove(creditStatus);
         }
     }
 
     @Override
+    @Transactional
     public void updateCreditStatus(CreditStatus creditStatus) {
-        if (creditStatus == null) {
-            throw new IllegalArgumentException("CreditStatus cannot be null");
-        }
-
-        try {
-            em.getTransaction().begin();
-            em.merge(creditStatus);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        }
+        em.merge(creditStatus);
     }
 }

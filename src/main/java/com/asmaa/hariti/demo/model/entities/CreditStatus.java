@@ -3,6 +3,7 @@ package com.asmaa.hariti.demo.model.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+
 @Entity
 @Table(name = "credit_status")
 public class CreditStatus {
@@ -18,8 +19,9 @@ public class CreditStatus {
     @Column(name = "description", length = 255)
     private String description;
 
-    // Constructors
-    public CreditStatus() {}
+    public CreditStatus() {
+        this.name = "Pending";
+    }
 
     public CreditStatus(String name) {
         this.name = name;
@@ -31,12 +33,12 @@ public class CreditStatus {
     }
 
     // Getters and Setters
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String id) {
+        this.id = Long.valueOf(id);
     }
 
     public String getName() {

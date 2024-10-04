@@ -21,7 +21,7 @@ public class CreditStatusService {
         return this.creditRequestStatusDAO.save(CreditStatus);
     }
     public void deleteCreditStatus(CreditStatus CreditStatus) {
-         this.creditRequestStatusDAO.deleteCreditStatus(CreditStatus.getId());
+         this.creditRequestStatusDAO.deleteCreditStatus(String.valueOf(CreditStatus.getId()));
     }
     public CreditStatus getCreditStatus(CreditStatus CreditStatus) {
          return this.creditRequestStatusDAO.save(CreditStatus);
