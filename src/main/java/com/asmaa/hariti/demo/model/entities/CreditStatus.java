@@ -31,7 +31,7 @@ public class CreditStatus {
     }
 
     // Getters and Setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

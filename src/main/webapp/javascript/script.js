@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
     durationInput.addEventListener('input', updateOutputs);
     projectSelect.addEventListener('change', updateProjectType);
 
-    // Initial calculation
     updateOutputs();
 
     // Form submission
