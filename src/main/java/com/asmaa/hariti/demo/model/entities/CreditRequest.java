@@ -5,6 +5,8 @@ import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "credit_requests")
@@ -12,7 +14,7 @@ public class CreditRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @NotBlank(message = "First name is required")
     @Size(max = 100, message = "First name must not exceed 100 characters")
@@ -54,16 +56,13 @@ public class CreditRequest {
     @Column(nullable = false)
     private Integer term;
 
-    @NotNull(message = "Interest rate is required")
-    @PositiveOrZero(message = "Interest rate must be positive or zero")
-    @DecimalMax(value = "100.00", message = "Interest rate must not exceed 100%")
-    @Column(name = "interest_rate", nullable = false, precision = 5, scale = 2)
-    private BigDecimal interestRate;
-//join tables syntax
-    @NotNull(message = "Status is required")
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "status_id", nullable = false)
-    private CreditStatus status;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "credit_request_status",
+            joinColumns = @JoinColumn(name = "credit_request_id"),
+            inverseJoinColumns = @JoinColumn(name = "status_id")
+    )
+    private Set<CreditStatus> statuses = new HashSet<>();
 
     @NotBlank(message = "Phone number is required")
     @Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits")
@@ -76,11 +75,13 @@ public class CreditRequest {
     private String email;
 
     public CreditRequest() {
+        // Initialize with empty HashSet
+        this.statuses = new HashSet<>();
     }
 
     public CreditRequest(String firstName, String lastName, String cin, LocalDate birthdate, LocalDate workDate,
-                         BigDecimal revenues, LocalDate requestDate, Integer term, BigDecimal interestRate,
-                         CreditStatus status, String phone, String email) {
+                         BigDecimal revenues, LocalDate requestDate, Integer term,
+                         Set<CreditStatus> statuses, String phone, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cin = cin;
@@ -89,18 +90,18 @@ public class CreditRequest {
         this.revenues = revenues;
         this.requestDate = requestDate;
         this.term = term;
-        this.interestRate = interestRate;
-        this.status = status;
+        this.statuses = statuses != null ? statuses : new HashSet<>();
         this.phone = phone;
         this.email = email;
     }
 
+    // Getters and setters
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -168,20 +169,12 @@ public class CreditRequest {
         this.term = term;
     }
 
-    public BigDecimal getInterestRate() {
-        return interestRate;
+    public Set<CreditStatus> getStatuses() {
+        return statuses != null ? statuses : new HashSet<>();
     }
 
-    public void setInterestRate(BigDecimal interestRate) {
-        this.interestRate = interestRate;
-    }
-
-    public CreditStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(CreditStatus status) {
-        this.status = status;
+    public void setStatuses(Set<CreditStatus> statuses) {
+        this.statuses = statuses != null ? statuses : new HashSet<>();
     }
 
     public String getPhone() {
@@ -200,11 +193,17 @@ public class CreditRequest {
         this.email = email;
     }
 
-    public void approve(CreditStatus approvedStatus) {
-        this.status = approvedStatus;
+    // Helper methods for managing statuses
+    public void addStatus(CreditStatus status) {
+        if (this.statuses == null) {
+            this.statuses = new HashSet<>();
+        }
+        this.statuses.add(status);
     }
 
-    public void reject(CreditStatus rejectedStatus) {
-        this.status = rejectedStatus;
+    public void removeStatus(CreditStatus status) {
+        if (this.statuses != null) {
+            this.statuses.remove(status);
+        }
     }
 }

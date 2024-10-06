@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface CreditRequestDAO {
     CreditRequest save(CreditRequest creditRequest);
-    Optional<CreditRequest> getCreditRequest(String creditRequestId);
+    Optional<CreditRequest> getCreditRequest(Long creditRequestId);
     List<CreditRequest> getAllCreditRequests();
-    void deleteCreditRequest(String creditRequestId);
+    void deleteCreditRequest(Long creditRequestId);
     void updateCreditRequest(CreditRequest creditRequest);
     List<CreditRequest> getCreditRequestsByStatus(CreditStatus status);
 }

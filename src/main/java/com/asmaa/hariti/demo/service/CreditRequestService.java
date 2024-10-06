@@ -34,7 +34,7 @@ public class CreditRequestService {
         creditRequestDAO.save(creditRequest);
     }
 
-    public Optional<CreditRequest> getCreditRequest(String creditRequestId) {
+    public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
         initializeDAO();
         return creditRequestDAO.getCreditRequest(creditRequestId);
     }
@@ -44,7 +44,7 @@ public class CreditRequestService {
         return creditRequestDAO.getAllCreditRequests();
     }
 
-    public void deleteCreditRequest(String creditRequestId) {
+    public void deleteCreditRequest(Long creditRequestId) {
         initializeDAO();
         creditRequestDAO.deleteCreditRequest(creditRequestId);
     }

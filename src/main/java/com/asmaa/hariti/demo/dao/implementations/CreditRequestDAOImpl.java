@@ -1,10 +1,9 @@
 package com.asmaa.hariti.demo.dao.implementations;
 
 import com.asmaa.hariti.demo.dao.repositories.CreditRequestDAO;
+import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
-import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 
@@ -13,7 +12,6 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class CreditRequestDAOImpl implements CreditRequestDAO {
-
     private EntityManager getEntityManager() {
         return EntityManagerSingleton.getEntityManager();
     }
@@ -23,30 +21,43 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+
+            // Save each CreditStatus in the many-to-many relationship
+            for (CreditStatus status : creditRequest.getStatuses()) {
+                if (status.getId() == null) {
+                    em.persist(status);
+                } else {
+                    em.merge(status); // Update if it already exists
+                }
+            }
+
             em.persist(creditRequest);
+
             em.getTransaction().commit();
-            return creditRequest;
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-            return null;
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e; // Re-throw the exception for higher-level handling
         }
+        return creditRequest;
     }
 
     @Override
-    public Optional<CreditRequest> getCreditRequest(String creditRequestId) {
-        EntityManager em = getEntityManager();
-        return Optional.ofNullable(em.find(CreditRequest.class, creditRequestId));
+    public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
+        return Optional.empty();
     }
+
 
     @Override
     public List<CreditRequest> getAllCreditRequests() {
-        EntityManager em = getEntityManager();
-        return em.createQuery("SELECT cr FROM CreditRequest cr", CreditRequest.class).getResultList();
+        return getEntityManager().createQuery("SELECT cr FROM CreditRequest cr", CreditRequest.class).getResultList();
     }
 
+
+
     @Override
-    public void deleteCreditRequest(String creditRequestId) {
+    public void deleteCreditRequest(Long creditRequestId) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -56,8 +67,10 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             }
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Failed to delete CreditRequest", e);
         }
     }
 
@@ -66,18 +79,32 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+
+            // Ensure all statuses are updated or persisted before updating the request
+            for (CreditStatus status : creditRequest.getStatuses()) {
+                if (status.getId() == null) {
+                    em.persist(status);
+                } else {
+                    em.merge(status);
+                }
+            }
+
+            // Update the CreditRequest
             em.merge(creditRequest);
+
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Failed to update CreditRequest", e);
         }
     }
 
     @Override
     public List<CreditRequest> getCreditRequestsByStatus(CreditStatus status) {
-        EntityManager em = getEntityManager();
-        return em.createQuery("SELECT cr FROM CreditRequest cr WHERE cr.status = :status", CreditRequest.class)
+        return getEntityManager().createQuery(
+                        "SELECT cr FROM CreditRequest cr JOIN cr.statuses s WHERE s = :status", CreditRequest.class)
                 .setParameter("status", status)
                 .getResultList();
     }

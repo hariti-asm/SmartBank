@@ -64,18 +64,7 @@ public class PersonalInfoServlet extends HttpServlet {
         BigDecimal revenues = parseBigDecimal(request.getParameter("revenus"));
 
         CreditRequest creditRequest = new CreditRequest(
-                firstName,
-                lastName,
-                cin,
-                birthdate,
-                workDate,
-                revenues,
-                LocalDate.now(),
-                null,
-                null,
-                new CreditStatus(),
-                (String) session.getAttribute("phone"),
-                (String) session.getAttribute("email")
+
         );
 
         creditRequestService.createCreditRequest(creditRequest);
