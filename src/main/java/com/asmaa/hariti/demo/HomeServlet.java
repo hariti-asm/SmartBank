@@ -13,7 +13,7 @@ public class HomeServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String project = request.getParameter("project");
-        String status = request.getParameter("status");
+        String job = request.getParameter("job");
         String amount = request.getParameter("amount");
         String duration = request.getParameter("duration");
         String monthlyPayment = request.getParameter("monthlyPayment");
@@ -21,11 +21,14 @@ public class HomeServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         session.setAttribute("project", project);
-        session.setAttribute("status", status);
+        session.setAttribute("job", job);
         session.setAttribute("amount", amount);
         session.setAttribute("duration", duration);
         session.setAttribute("monthlyPayment", monthlyPayment);
         session.setAttribute("fraisDossier", fraisDossier);
+
+        // Debug logging
+        System.out.println("HomeServlet - Setting job in session: " + job);
 
         response.sendRedirect(request.getContextPath() + "/coordinates");
     }

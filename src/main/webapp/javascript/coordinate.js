@@ -1,18 +1,54 @@
-function displayStoredData() {
-    // Retrieve values from local storage
-    const project = localStorage.getItem('project') || 'N/A';
-    const status = localStorage.getItem('status') || 'N/A';
-    const amount = localStorage.getItem('amount') || 'N/A';
-    const duration = localStorage.getItem('duration') || 'N/A';
-    const monthlyPayment = localStorage.getItem('monthly') || 'N/A';
-    const fraisDossier = localStorage.getItem('fraisDossier') || 'N/A';
+document.addEventListener('DOMContentLoaded', function() {
+    displayStoredData();
+    setupFormSubmission();
+});
 
-    document.getElementById('project').textContent = project;
-    document.getElementById('status').textContent = status;
-    document.getElementById('amount').textContent = amount + ' DH';
-    document.getElementById('duration').textContent = duration + ' mois';
-    document.getElementById('monthlyPayment').textContent = monthlyPayment + ' DH';
-    document.getElementById('frais-dossier-output').textContent = fraisDossier + ' DH';
+function displayStoredData() {
+    const fields = [
+        { key: 'project', suffix: '' },
+        { key: 'status', suffix: '' },
+        { key: 'amount', suffix: ' DH' },
+        { key: 'duration', suffix: ' mois' },
+        { key: 'monthly', suffix: ' DH', elementId: 'monthlyPayment' },
+        { key: 'fraisDossier', suffix: ' DH', elementId: 'frais-dossier-output' }
+    ];
+
+    fields.forEach(field => {
+        const value = localStorage.getItem(field.key) || 'N/A';
+        const elementId = field.elementId || field.key;
+        const element = document.getElementById(elementId);
+
+        if (element) {
+            element.textContent = value + field.suffix;
+        } else {
+            console.warn(`Element with id '${elementId}' not found.`);
+        }
+
+        console.log(`${field.key}:`, value);
+    });
 }
 
-window.onload = displayStoredData;
+function setupFormSubmission() {
+    const form = document.getElementById('creditForm');
+    if (!form) {
+        console.warn("Form with id 'creditForm' not found.");
+        return;
+    }
+
+    form.addEventListener('submit', function (event) {
+        const fields = ['monthly', 'amount', 'duration'];
+
+        fields.forEach(field => {
+            const value = localStorage.getItem(field);
+            if (value) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = field;
+                input.value = value;
+                form.appendChild(input);
+            } else {
+                console.warn(`${field} value is missing in localStorage!`);
+            }
+        });
+    });
+}

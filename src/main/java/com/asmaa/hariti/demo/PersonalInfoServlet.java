@@ -1,8 +1,6 @@
 package com.asmaa.hariti.demo;
 
-import com.asmaa.hariti.demo.dao.repositories.CreditRequestDAO;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
-import com.asmaa.hariti.demo.model.entities.CreditStatus;
 import com.asmaa.hariti.demo.service.CreditRequestService;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -15,17 +13,21 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 @WebServlet(name = "personalInfoServlet", value = "/personalInfo")
 public class PersonalInfoServlet extends HttpServlet {
 
     private CreditRequestService creditRequestService;
+
     public PersonalInfoServlet() {
     }
+
     @Inject
     public PersonalInfoServlet(CreditRequestService creditRequestService) {
         this.creditRequestService = creditRequestService;
     }
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -33,44 +35,137 @@ public class PersonalInfoServlet extends HttpServlet {
             creditRequestService = new CreditRequestService();
         }
     }
+
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
 
-        String[] attributes = {"project", "status", "amount", "duration", "email", "phone"};
-        for (String attribute : attributes) {
-            request.setAttribute(attribute, session.getAttribute(attribute));
-        }
+        String project = (String) session.getAttribute("project");
+        String job = (String) session.getAttribute("job");
+        String amount = (String) session.getAttribute("amount");
+        String duration = (String) session.getAttribute("duration");
+        String email = (String) session.getAttribute("email");
+        String phone = (String) session.getAttribute("phone");
+
+        System.out.println("PersonalInfoServlet doGet - Job from session: " + job);
+
+        request.setAttribute("email", email);
+        request.setAttribute("phone", phone);
+        request.setAttribute("project", project);
+        request.setAttribute("job", job);
+        request.setAttribute("amount", amount);
+        request.setAttribute("duration", duration);
 
         request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("doPost method called");
+
         HttpSession session = request.getSession();
 
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
-        String cin = request.getParameter("cin");
+        try {
+            CreditRequest creditRequest = new CreditRequest();
+            creditRequest.setFirstName(getRequiredParameter(request, "firstName"));
+            creditRequest.setLastName(getRequiredParameter(request, "lastName"));
+            creditRequest.setCin(getRequiredParameter(request, "cin"));
 
-        if (isNullOrEmpty(firstName) || isNullOrEmpty(lastName) || isNullOrEmpty(cin)) {
-            request.setAttribute("errorMessage", "All fields are required.");
+            String email = (String) session.getAttribute("email");
+            String phone = (String) session.getAttribute("phone");
+            String job = (String) session.getAttribute("job");
+            String amount = (String) session.getAttribute("amount");
+            String duration = (String) session.getAttribute("duration");
+
+            if (email != null && !email.isEmpty()) {
+                creditRequest.setEmail(email);
+            } else {
+                creditRequest.setEmail(getRequiredParameter(request, "email"));
+            }
+
+            if (phone != null && !phone.isEmpty()) {
+                creditRequest.setPhone(phone);
+            } else {
+                creditRequest.setPhone(getRequiredParameter(request, "phone"));
+            }
+
+            if (job != null && !job.isEmpty()) {
+                creditRequest.setJob(job);
+            } else {
+                creditRequest.setJob(getRequiredParameter(request, "job"));
+            }
+
+            // Set amount
+            if (amount != null && !amount.isEmpty()) {
+                creditRequest.setRevenues(new BigDecimal(amount));
+            } else {
+                creditRequest.setRevenues(parseBigDecimal(getRequiredParameter(request, "amount")));
+            }
+
+            // Set duration
+            if (duration != null && !duration.isEmpty()) {
+                creditRequest.setDuration(Integer.parseInt(duration));
+            } else {
+                creditRequest.setDuration(Integer.parseInt(getRequiredParameter(request, "duration")));
+            }
+
+            // Set monthly payment (calculate or get from form)
+            String monthlyPayment = request.getParameter("monthlyPayment");
+            if (monthlyPayment != null && !monthlyPayment.isEmpty()) {
+                creditRequest.setMonthlyPayment(new BigDecimal(monthlyPayment));
+            } else {
+                // You might want to calculate this based on amount and duration
+                // For now, we'll set it to null if not provided
+                creditRequest.setMonthlyPayment(null);
+            }
+
+            // Set folder cost
+            String folderCost = request.getParameter("folderCost");
+            if (folderCost != null && !folderCost.isEmpty()) {
+                creditRequest.setFolderCost(new BigDecimal(folderCost));
+            } else {
+                // You might want to set a default value or calculate it
+                // For now, we'll set it to null if not provided
+                creditRequest.setFolderCost(null);
+            }
+
+            // Debug: Print email and phone
+            System.out.println("Email: " + creditRequest.getEmail());
+            System.out.println("Phone: " + creditRequest.getPhone());
+            System.out.println("Job: " + creditRequest.getJob());
+            System.out.println("Amount: " + creditRequest.getRevenues());
+            System.out.println("Duration: " + creditRequest.getDuration());
+            System.out.println("Monthly Payment: " + creditRequest.getMonthlyPayment());
+            System.out.println("Folder Cost: " + creditRequest.getFolderCost());
+
+            creditRequest.setBirthdate(parseLocalDate(getRequiredParameter(request, "birthdate")));
+            creditRequest.setWorkDate(parseLocalDate(getRequiredParameter(request, "workdate")));
+            creditRequest.setRequestDate(LocalDate.now());
+
+            // Log the credit request object
+            System.out.println("Calling creditRequestService.createCreditRequest");
+            creditRequestService.createCreditRequest(creditRequest);
+            System.out.println("CreditRequest created successfully");
+            request.setAttribute("message", "Credit request submitted successfully!");
+            System.out.println("Forwarding to success.jsp");
+            request.getRequestDispatcher("/success.jsp").forward(request, response);
+        } catch (IllegalArgumentException e) {
+            System.out.println("IllegalArgumentException caught: " + e.getMessage());
+            request.setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
-            return;
+        } catch (Exception e) {
+            System.out.println("Exception caught: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "An error occurred while processing your request. Please try again.");
+            request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
         }
-
-        LocalDate birthdate = parseLocalDate(request.getParameter("birthdate"));
-        LocalDate workDate = parseLocalDate(request.getParameter("workdate"));
-        BigDecimal revenues = parseBigDecimal(request.getParameter("revenus"));
-
-        CreditRequest creditRequest = new CreditRequest(
-
-        );
-
-        creditRequestService.createCreditRequest(creditRequest);
-
-        request.setAttribute("message", "Credit request submitted successfully!");
-        request.getRequestDispatcher("/success.jsp").forward(request, response);
+    }
+    private String getRequiredParameter(HttpServletRequest request, String paramName) {
+        String value = request.getParameter(paramName);
+        if (isNullOrEmpty(value)) {
+            throw new IllegalArgumentException(paramName + " is required.");
+        }
+        return value;
     }
 
     private boolean isNullOrEmpty(String str) {
@@ -78,10 +173,18 @@ public class PersonalInfoServlet extends HttpServlet {
     }
 
     private LocalDate parseLocalDate(String dateStr) {
-        return isNullOrEmpty(dateStr) ? null : LocalDate.parse(dateStr);
+        try {
+            return LocalDate.parse(dateStr);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format for: " + dateStr);
+        }
     }
 
     private BigDecimal parseBigDecimal(String numStr) {
-        return isNullOrEmpty(numStr) ? null : new BigDecimal(numStr);
+        try {
+            return new BigDecimal(numStr);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number format for: " + numStr);
+        }
     }
 }

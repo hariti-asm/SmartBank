@@ -8,17 +8,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/personnal_info.css">
 </head>
 <body>
-
-
 <main class="main-content">
-
-
     <h1>Demander mon crédit en ligne</h1>
-
     <a href="#" class="back-button">← Retour</a>
-    <div>
-
-    </div>
     <div class="steps">
         <a href="#" class="step active">
             <span class="step-number">1</span>
@@ -34,28 +26,26 @@
         </a>
     </div>
 
-
     <div class="application-container">
-
         <form id="credit-form" class="credit-form" action="personalInfo" method="post">
             <div class="form-group">
                 <label>Civilité</label>
                 <div class="radio-group">
                     <input type="radio" id="madame" name="civility" value="Madame" checked>
                     <label for="madame">Madame</label>
-                    <input type="radio" id="mademoiselle" name="civilite" value="Mademoiselle">
+                    <input type="radio" id="mademoiselle" name="civility" value="Mademoiselle">
                     <label for="mademoiselle">Mademoiselle</label>
-                    <input type="radio" id="monsieur" name="civilite" value="Monsieur">
+                    <input type="radio" id="monsieur" name="civility" value="Monsieur">
                     <label for="monsieur">Monsieur</label>
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="text" id="nom" name="firstName" placeholder="Nom*" required>
+                <input type="text" id="nom" name="lastName" placeholder="Nom*" required>
             </div>
 
             <div class="form-group">
-                <input type="text" id="prenom" name="lastName" placeholder="Prénom*" required>
+                <input type="text" id="prenom" name="firstName" placeholder="Prénom*" required>
             </div>
 
             <div class="form-group">
@@ -73,7 +63,8 @@
             </div>
 
             <div class="form-group">
-                <input type="number" id="revenus" name="revenus" placeholder="Total revenus mensuels (net en DH)*" required>
+                <label for="revenus"></label><input type="number" id="revenus" name="revenus"
+                                                    placeholder="Total revenus mensuels (net en DH)*" required>
             </div>
 
             <div class="form-group">
@@ -95,46 +86,46 @@
                 <button type="submit" class="btn btn-primary">Demander ce crédit</button>
                 <button type="button" class="btn btn-secondary">Voir mon récapitulatif</button>
             </div>
+            <input type="hidden" name="amount" id="hidden-amount">
+            <input type="hidden" name="duration" id="hidden-duration">
+            <input type="hidden" name="monthlyPayment" id="hidden-monthlyPayment">
+            <input type="hidden" name="applicationFee" id="hidden-applicationFee">
+
         </form>
         <aside class="summary">
             <h2>Mon récapitulatif</h2>
             <div class="summary-content">
                 <h3>Mon projet</h3>
-                <p></p>
+                <p>${project}</p>
                 <h3>Coordonnées et infos personnelles</h3>
                 <dl>
-                    <dt>Email:${email}</dt>
-                    <dd></dd>
-                    <dt>Téléphone:${phone   }</dt>
-                    <dd></dd>
+                    <dt>Email:</dt>
+                    <dd>${email}</dd>
+                    <dt>Téléphone:</dt>
+                    <dd>${phone}</dd>
                 </dl>
                 <h3>Détails de mon crédit</h3>
                 <dl>
                     <dt>Vous êtes:</dt>
-                    <dd> ${status}</dd>
-                    <dt>Montant: ${amount}</dt>
-                    <dd></dd>
-                    <dt>Durée: ${duration}</dt>
-                    <dd></dd>
+                    <dd>${not empty job ? job : 'Non spécifié'}</dd>
+                    <dt>Montant:</dt>
+                    <dd>${amount}</dd>
+                    <dt>Durée:</dt>
+                    <dd>${duration}</dd>
                     <dt>Mensualité:</dt>
-                    <dd></dd>
+                    <dd>${mensualite}</dd>
                     <dt>Frais de dossier:</dt>
-                    <dd></dd>
+                    <dd>${fraisDossier}</dd>
                 </dl>
             </div>
         </aside>
-
-
-
     </div>
     <footer class="page-footer">
         <p>Simulation à titre indicatif et non contractuelle. La mensualité minimale est de 180 dirhams. Un client Wafasalaf peut bénéficier d'une tarification plus avantageuse en fonction de ses conditions préférentielles.</p>
         <p>Conformément à la loi 09-08, vous disposez d'un droit d'accès, de rectification et d'opposition au traitement de vos données personnelles. Ce traitement est autorisé par la CNDP sous le numéro A-GC-206/2014.</p>
     </footer>
-
 </main>
-
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/personnal_info.js"></script>
 
 </body>
 </html>

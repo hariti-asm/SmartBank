@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label for="status">Je suis</label>
-                <select id="status" name="status">
+                <select id="status" name="job">
                     <option value="fonctionnaire" selected>Fonctionnaire</option>
                     <option value="retire">Retraité</option>
                     <option value="unemployed">Chômeur</option>
