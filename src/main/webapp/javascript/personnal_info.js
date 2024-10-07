@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(localStorage.getItem('monthly'));
     console.log(localStorage.getItem('fraisDossier'));
 
+
     // Update the summary section in the aside
     document.querySelector('.summary-content dl:nth-of-type(2) dd:nth-of-type(2)').textContent = summaryData.amount + " DH"; // Montant
     document.querySelector('.summary-content dl:nth-of-type(2) dd:nth-of-type(3)').textContent = summaryData.duration + " mois"; // Durée

@@ -47,15 +47,20 @@ public class PersonalInfoServlet extends HttpServlet {
         String duration = (String) session.getAttribute("duration");
         String email = (String) session.getAttribute("email");
         String phone = (String) session.getAttribute("phone");
-
+        Double folderCost = (Double) session.getAttribute("folderCost");
+        String firstName = (String) session.getAttribute("firstName");
+        String lastName = (String) session.getAttribute("lastName");
         System.out.println("PersonalInfoServlet doGet - Job from session: " + job);
 
         request.setAttribute("email", email);
         request.setAttribute("phone", phone);
+        request.setAttribute("firstName", firstName);
+        request.setAttribute("lastName", lastName);
         request.setAttribute("project", project);
         request.setAttribute("job", job);
         request.setAttribute("amount", amount);
         request.setAttribute("duration", duration);
+        request.setAttribute("folderCost", folderCost);
 
         request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
     }
@@ -76,7 +81,6 @@ public class PersonalInfoServlet extends HttpServlet {
             String job = (String) session.getAttribute("job");
             String amount = (String) session.getAttribute("amount");
             String duration = (String) session.getAttribute("duration");
-
             if (email != null && !email.isEmpty()) {
                 creditRequest.setEmail(email);
             } else {
@@ -95,41 +99,32 @@ public class PersonalInfoServlet extends HttpServlet {
                 creditRequest.setJob(getRequiredParameter(request, "job"));
             }
 
-            // Set amount
             if (amount != null && !amount.isEmpty()) {
                 creditRequest.setRevenues(new BigDecimal(amount));
             } else {
                 creditRequest.setRevenues(parseBigDecimal(getRequiredParameter(request, "amount")));
             }
 
-            // Set duration
             if (duration != null && !duration.isEmpty()) {
                 creditRequest.setDuration(Integer.parseInt(duration));
             } else {
                 creditRequest.setDuration(Integer.parseInt(getRequiredParameter(request, "duration")));
             }
 
-            // Set monthly payment (calculate or get from form)
             String monthlyPayment = request.getParameter("monthlyPayment");
             if (monthlyPayment != null && !monthlyPayment.isEmpty()) {
                 creditRequest.setMonthlyPayment(new BigDecimal(monthlyPayment));
             } else {
-                // You might want to calculate this based on amount and duration
-                // For now, we'll set it to null if not provided
+
                 creditRequest.setMonthlyPayment(null);
             }
 
-            // Set folder cost
             String folderCost = request.getParameter("folderCost");
-            if (folderCost != null && !folderCost.isEmpty()) {
-                creditRequest.setFolderCost(new BigDecimal(folderCost));
-            } else {
-                // You might want to set a default value or calculate it
-                // For now, we'll set it to null if not provided
+            if (folderCost == null || folderCost.isEmpty()) {
+                System.out.println("Folder cost is null or empty");
                 creditRequest.setFolderCost(null);
             }
 
-            // Debug: Print email and phone
             System.out.println("Email: " + creditRequest.getEmail());
             System.out.println("Phone: " + creditRequest.getPhone());
             System.out.println("Job: " + creditRequest.getJob());
@@ -143,7 +138,7 @@ public class PersonalInfoServlet extends HttpServlet {
             creditRequest.setRequestDate(LocalDate.now());
 
             // Log the credit request object
-            System.out.println("Calling creditRequestService.createCreditRequest");
+            System.out.println("Calling creditRequestService.createCreditRequest hamza");
             creditRequestService.createCreditRequest(creditRequest);
             System.out.println("CreditRequest created successfully");
             request.setAttribute("message", "Credit request submitted successfully!");

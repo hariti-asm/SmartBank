@@ -22,12 +22,11 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
         try {
             em.getTransaction().begin();
 
-            // Save each CreditStatus in the many-to-many relationship
             for (CreditStatus status : creditRequest.getStatuses()) {
                 if (status.getId() == null) {
                     em.persist(status);
                 } else {
-                    em.merge(status); // Update if it already exists
+                    em.merge(status);
                 }
             }
 

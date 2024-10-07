@@ -16,11 +16,6 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>coordinateServlet</servlet-name>
-        <servlet-class>com.asmaa.hariti.demo.CoordinateServlet</servlet-class>
-    </servlet>
-
     <servlet-mapping>
         <servlet-name>coordinateServlet</servlet-name>
         <url-pattern>/coordinates</url-pattern>

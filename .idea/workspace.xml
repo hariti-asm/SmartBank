@@ -12,14 +12,10 @@
   <component name="ChangeListManager">
     <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CoordinateServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CoordinateServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/HomeServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/HomeServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/coordinates.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/coordinates.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascript/coordinate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascript/coordinate.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/personnal_info.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/personnal_info.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/javascript/personnal_info.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascript/personnal_info.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/personalInfo.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/personalInfo.jsp" afterDir="false" />
     </list>
@@ -382,7 +378,7 @@
       <workItem from="1727989067067" duration="687000" />
       <workItem from="1728220806980" duration="1572000" />
       <workItem from="1728222445439" duration="1012000" />
-      <workItem from="1728225616479" duration="16817000" />
+      <workItem from="1728225616479" duration="25230000" />
     </task>
     <servers />
   </component>
@@ -407,6 +403,11 @@
           <url>file://$PROJECT_DIR$/src/main/webapp/index.jsp</url>
           <line>2</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/webapp/personalInfo.jsp</url>
+          <line>737</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/webapp/javascript/script.js</url>
