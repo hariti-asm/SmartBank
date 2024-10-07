@@ -1,29 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
     const amountInput = document.getElementById('amount');
-    const amountOutput = document.getElementById('amount-output');
+    const amountOutput = document.getElementById('sliderValue');
     const durationInput = document.getElementById('duration');
-    const durationOutput = document.getElementById('duration-output');
-    const monthlyOutput = document.getElementById('monthly-output');
-    const monthlyInput = document.getElementById('monthly');
+    const durationOutput = document.getElementById('durationValue');
+    const monthlyOutput = document.getElementById('mensualiteValue');
     const fraisDossierOutput = document.getElementById('frais-dossier-output');
     const projectSelect = document.getElementById('project');
     const projectType = document.getElementById('project-type');
 
     function updateOutputs() {
-        amountOutput.textContent = amountInput.value;
-        durationOutput.textContent = durationInput.value;
+        amountOutput.value = amountInput.value;
+        durationOutput.value = durationInput.value;
         calculateMonthly();
         calculateFraisDossier();
         updateProjectType();
     }
 
     function calculateMonthly() {
-        const K = parseFloat(amountInput.value); // capital emprunté
-        const t = 0.12; // taux annuel (12% as an example)
-        const n = parseFloat(durationInput.value); // nombre de mensualités
-
+        const K = parseFloat(amountInput.value);
+        const t = 0.12;
+        const n = parseFloat(durationInput.value);
         if (isNaN(K) || isNaN(n) || n <= 0) {
-            monthlyOutput.textContent = '0.00';
+            monthlyOutput.value = '0.00';
             monthlyInput.value = '0.00';
             return;
         }
@@ -31,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const monthlyRate = t / 12;
         const m = (K * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -n));
 
-        monthlyOutput.textContent = m.toFixed(2);
+        monthlyOutput.value = m.toFixed(2);
         monthlyInput.value = m.toFixed(2);
     }
 
@@ -56,12 +54,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updateOutputs();
 
-    // Form submission
     document.getElementById('loan-form').addEventListener('submit', function(e) {
-        // Store values in localStorage
         localStorage.setItem('amount', amountInput.value);
         localStorage.setItem('duration', durationInput.value);
-        localStorage.setItem('monthly', monthlyOutput.textContent);
+        localStorage.setItem('monthly', monthlyOutput.value);
         localStorage.setItem('fraisDossier', fraisDossierOutput.textContent);
         console.log("Form submitted. Stored values:", {
             amount: localStorage.getItem('amount'),
@@ -69,6 +65,5 @@ document.addEventListener('DOMContentLoaded', function() {
             monthly: localStorage.getItem('monthly'),
             fraisDossier: localStorage.getItem('fraisDossier')
         });
-
     });
 });

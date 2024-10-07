@@ -13,8 +13,6 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
             rel="stylesheet">
     <title>Simuler mon crédit</title>
-    <script src="${pageContext.request.contextPath}/javascript/script.js" defer></script>
-
 </head>
 
 <body class="bg">
@@ -85,7 +83,7 @@
                             <input type="range" id="mensualiteSlider" name="monthly" min="1" max="80000" step="100" value="70" class="slider">
                         </div>
                         <div class="flex-center">
-                            <button class="button1 m-t-5">
+                            <button class="button1 m-t-5" type="submit">
                                 <p class="p-10">Continuer</p>
                                 <p class="p-2">Sans engagement</p>
                             </button>
@@ -129,5 +127,7 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/javascript/script.js"></script>
 </body>
 </html>
