@@ -12,7 +12,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/CreditRequestValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/CreditRequestValidator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/personalInfo.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/personalInfo.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

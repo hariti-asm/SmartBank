@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 public class CreditRequestValidator {
-
     private static final Validator validator;
 
     static {
@@ -29,24 +28,36 @@ public class CreditRequestValidator {
         return errors;
     }
 
-    public static List<String> validateCustomerName(CreditRequest creditRequest) {
-        return validateProperty(creditRequest, "customerName");
+    public static List<String> validateFirstName(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "firstName");
     }
 
-    public static List<String> validateAmount(CreditRequest creditRequest) {
-        return validateProperty(creditRequest, "amount");
+    public static List<String> validateLastName(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "lastName");
+    }
+
+    public static List<String> validateCin(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "cin");
+    }
+
+    public static List<String> validateBirthdate(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "birthdate");
+    }
+
+    public static List<String> validateWorkDate(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "workDate");
+    }
+
+    public static List<String> validateJob(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "job");
+    }
+
+    public static List<String> validateRevenues(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "revenues");
     }
 
     public static List<String> validateRequestDate(CreditRequest creditRequest) {
         return validateProperty(creditRequest, "requestDate");
-    }
-
-    public static List<String> validateTerm(CreditRequest creditRequest) {
-        return validateProperty(creditRequest, "term");
-    }
-
-    public static List<String> validateInterestRate(CreditRequest creditRequest) {
-        return validateProperty(creditRequest, "interestRate");
     }
 
     public static List<String> validatePhone(CreditRequest creditRequest) {
@@ -55,6 +66,18 @@ public class CreditRequestValidator {
 
     public static List<String> validateEmail(CreditRequest creditRequest) {
         return validateProperty(creditRequest, "email");
+    }
+
+    public static List<String> validateDuration(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "duration");
+    }
+
+    public static List<String> validateMonthlyPayment(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "monthlyPayment");
+    }
+
+    public static List<String> validateFolderCost(CreditRequest creditRequest) {
+        return validateProperty(creditRequest, "folderCost");
     }
 
     private static List<String> validateProperty(CreditRequest creditRequest, String propertyName) {

@@ -1,5 +1,6 @@
 package com.asmaa.hariti.demo;
 
+import com.asmaa.hariti.demo.helpers.CreditRequestValidator;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
 import com.asmaa.hariti.demo.service.CreditRequestService;
 import jakarta.inject.Inject;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @WebServlet(name = "personalInfoServlet", value = "/personalInfo")
 public class PersonalInfoServlet extends HttpServlet {
@@ -72,6 +74,7 @@ public class PersonalInfoServlet extends HttpServlet {
 
         try {
             CreditRequest creditRequest = new CreditRequest();
+
             creditRequest.setFirstName(getRequiredParameter(request, "firstName"));
             creditRequest.setLastName(getRequiredParameter(request, "lastName"));
             creditRequest.setCin(getRequiredParameter(request, "cin"));
@@ -81,6 +84,7 @@ public class PersonalInfoServlet extends HttpServlet {
             String job = (String) session.getAttribute("job");
             String amount = (String) session.getAttribute("amount");
             String duration = (String) session.getAttribute("duration");
+
             if (email != null && !email.isEmpty()) {
                 creditRequest.setEmail(email);
             } else {
@@ -115,7 +119,6 @@ public class PersonalInfoServlet extends HttpServlet {
             if (monthlyPayment != null && !monthlyPayment.isEmpty()) {
                 creditRequest.setMonthlyPayment(new BigDecimal(monthlyPayment));
             } else {
-
                 creditRequest.setMonthlyPayment(null);
             }
 
@@ -123,8 +126,15 @@ public class PersonalInfoServlet extends HttpServlet {
             if (folderCost == null || folderCost.isEmpty()) {
                 System.out.println("Folder cost is null or empty");
                 creditRequest.setFolderCost(null);
+            } else {
+                creditRequest.setFolderCost(new BigDecimal(folderCost));
             }
 
+            creditRequest.setBirthdate(parseLocalDate(getRequiredParameter(request, "birthdate")));
+            creditRequest.setWorkDate(parseLocalDate(getRequiredParameter(request, "workdate")));
+            creditRequest.setRequestDate(LocalDate.now());
+
+            // Log the credit request object
             System.out.println("Email: " + creditRequest.getEmail());
             System.out.println("Phone: " + creditRequest.getPhone());
             System.out.println("Job: " + creditRequest.getJob());
@@ -133,12 +143,16 @@ public class PersonalInfoServlet extends HttpServlet {
             System.out.println("Monthly Payment: " + creditRequest.getMonthlyPayment());
             System.out.println("Folder Cost: " + creditRequest.getFolderCost());
 
-            creditRequest.setBirthdate(parseLocalDate(getRequiredParameter(request, "birthdate")));
-            creditRequest.setWorkDate(parseLocalDate(getRequiredParameter(request, "workdate")));
-            creditRequest.setRequestDate(LocalDate.now());
+            List<String> validationErrors = CreditRequestValidator.validate(creditRequest);
 
-            // Log the credit request object
-            System.out.println("Calling creditRequestService.createCreditRequest hamza");
+            if (!validationErrors.isEmpty()) {
+                request.setAttribute("validationErrors", validationErrors);
+                setRequestAttributes(request, creditRequest);
+                request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
+                return;
+            }
+
+            System.out.println("Calling creditRequestService.createCreditRequest");
             creditRequestService.createCreditRequest(creditRequest);
             System.out.println("CreditRequest created successfully");
             request.setAttribute("message", "Credit request submitted successfully!");
@@ -155,6 +169,23 @@ public class PersonalInfoServlet extends HttpServlet {
             request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
         }
     }
+
+    private void setRequestAttributes(HttpServletRequest request, CreditRequest creditRequest) {
+        request.setAttribute("firstName", creditRequest.getFirstName());
+        request.setAttribute("lastName", creditRequest.getLastName());
+        request.setAttribute("cin", creditRequest.getCin());
+        request.setAttribute("email", creditRequest.getEmail());
+        request.setAttribute("phone", creditRequest.getPhone());
+        request.setAttribute("job", creditRequest.getJob());
+        request.setAttribute("amount", creditRequest.getRevenues());
+        request.setAttribute("duration", creditRequest.getDuration());
+        request.setAttribute("birthdate", creditRequest.getBirthdate());
+        request.setAttribute("workdate", creditRequest.getWorkDate());
+        request.setAttribute("monthlyPayment", creditRequest.getMonthlyPayment());
+        request.setAttribute("folderCost", creditRequest.getFolderCost());
+    }
+
+
     private String getRequiredParameter(HttpServletRequest request, String paramName) {
         String value = request.getParameter(paramName);
         if (isNullOrEmpty(value)) {

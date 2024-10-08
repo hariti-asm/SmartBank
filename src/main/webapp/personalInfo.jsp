@@ -173,6 +173,16 @@
         </div>
     </div>
 </div>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:if test="${not empty validationErrors}">
+    <div class="error-messages">
+        <ul>
+            <c:forEach var="error" items="${validationErrors}">
+                <li>${error}</li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/personnal_info.js"></script>
 </body>
 </html>
