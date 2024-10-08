@@ -12,19 +12,14 @@ public class CreditStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Status name is required")
-    @Column(name = "name", nullable = false, unique = true, length = 20)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", length = 255)
+    @Column(name = "description", nullable = true)
     private String description;
 
-    public CreditStatus() {
-        this.name = "Pending";
-    }
 
-    public CreditStatus(String name) {
-        this.name = name;
+    public CreditStatus() {
     }
 
     public CreditStatus(String name, String description) {
@@ -32,13 +27,12 @@ public class CreditStatus {
         this.description = description;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = Long.valueOf(id);
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

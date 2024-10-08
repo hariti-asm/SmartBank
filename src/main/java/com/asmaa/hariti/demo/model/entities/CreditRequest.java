@@ -47,9 +47,9 @@ public class CreditRequest {
     @PastOrPresent(message = "Request date must not be in the future")
     @Column(name = "request_date", nullable = true)
     private LocalDate requestDate;
-
-
-
+    @Positive(message = "Amount must be positive")
+    @Column(name = "amount", nullable = true, precision = 10, scale = 2)
+    private BigDecimal amount;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "credit_request_status",
@@ -65,6 +65,7 @@ public class CreditRequest {
     @Email(message = "Invalid email format")
     @Column(name = "email", nullable = true, length = 100)
     private String email;
+
     @Positive(message = "Duration must be positive")
     @Column(name = "duration", nullable = true)
     private Integer duration;
@@ -77,10 +78,13 @@ public class CreditRequest {
     @Column(name = "folder_cost", nullable = true, precision = 10, scale = 2)
     private BigDecimal folderCost;
 
+    public CreditRequest() {
+        this.statuses = new HashSet<>();
+    }
 
     public CreditRequest(String firstName, String lastName, String cin, LocalDate birthdate, LocalDate workDate,
                          BigDecimal revenues, LocalDate requestDate, String phone, String email, String job,
-                         Set<CreditStatus> statuses, Integer duration, BigDecimal monthlyPayment, BigDecimal folderCost) {
+                         Set<CreditStatus> statuses, Integer duration, BigDecimal monthlyPayment, BigDecimal folderCost, BigDecimal amount) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.cin = cin;
@@ -95,15 +99,21 @@ public class CreditRequest {
         this.duration = duration;
         this.monthlyPayment = monthlyPayment;
         this.folderCost = folderCost;
+        this.amount = amount;
     }
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public void addStatus(CreditStatus status) {
         if (this.statuses == null) {
             this.statuses = new HashSet<>();
         }
         this.statuses.add(status);
-    }
-    public CreditRequest() {
-        this.statuses = new HashSet<>();
     }
 
     public void removeStatus(CreditStatus status) {
@@ -111,6 +121,8 @@ public class CreditRequest {
             this.statuses.remove(status);
         }
     }
+
+    // Getters and setters
 
     public Long getId() {
         return id;
@@ -120,59 +132,59 @@ public class CreditRequest {
         this.id = id;
     }
 
-    public @Size(max = 100, message = "First name must not exceed 100 characters") String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(@Size(max = 100, message = "First name must not exceed 100 characters") String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public @Size(max = 100, message = "Last name must not exceed 100 characters") String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(@Size(max = 100, message = "Last name must not exceed 100 characters") String lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public @Size(max = 20, message = "CIN must not exceed 20 characters") String getCin() {
+    public String getCin() {
         return cin;
     }
 
-    public void setCin(@Size(max = 20, message = "CIN must not exceed 20 characters") String cin) {
+    public void setCin(String cin) {
         this.cin = cin;
     }
 
-    public @Past(message = "Birthdate must be in the past") LocalDate getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(@Past(message = "Birthdate must be in the past") LocalDate birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
-    public @PastOrPresent(message = "Work date must not be in the future") LocalDate getWorkDate() {
+    public LocalDate getWorkDate() {
         return workDate;
     }
 
-    public void setWorkDate(@PastOrPresent(message = "Work date must not be in the future") LocalDate workDate) {
+    public void setWorkDate(LocalDate workDate) {
         this.workDate = workDate;
     }
 
-    public @PositiveOrZero(message = "Revenues must be positive or zero") BigDecimal getRevenues() {
+    public BigDecimal getRevenues() {
         return revenues;
     }
 
-    public void setRevenues(@PositiveOrZero(message = "Revenues must be positive or zero") BigDecimal revenues) {
+    public void setRevenues(BigDecimal revenues) {
         this.revenues = revenues;
     }
 
-    public @PastOrPresent(message = "Request date must not be in the future") LocalDate getRequestDate() {
+    public LocalDate getRequestDate() {
         return requestDate;
     }
 
-    public void setRequestDate(@PastOrPresent(message = "Request date must not be in the future") LocalDate requestDate) {
+    public void setRequestDate(LocalDate requestDate) {
         this.requestDate = requestDate;
     }
 
@@ -184,19 +196,19 @@ public class CreditRequest {
         this.statuses = statuses;
     }
 
-    public @Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits") String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(@Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits") String phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public @Email(message = "Invalid email format") String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(@Email(message = "Invalid email format") String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -207,6 +219,7 @@ public class CreditRequest {
     public void setJob(String job) {
         this.job = job;
     }
+
     public Integer getDuration() {
         return duration;
     }
@@ -230,5 +243,4 @@ public class CreditRequest {
     public void setFolderCost(BigDecimal folderCost) {
         this.folderCost = folderCost;
     }
-    }
-
+}

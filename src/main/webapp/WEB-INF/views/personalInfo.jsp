@@ -111,8 +111,8 @@
                     </div>
 
                     <div class="m-t-9 input-container">
-                        <input type="number" name="monthlyPayment" id="monthlyPayment" class="custom-input" required
-                               value="${monthlyPayment}">
+                        <input type="number" name="revenues" id="monthlyPayment" class="custom-input" required
+                               >
                         <label for="monthlyPayment" class="custom-label">Total revenus mensuels (net en DH)*</label>
                     </div>
 
@@ -156,7 +156,7 @@
         <div class="card w-20">
             <p class="titre-center mon color-four">Mon récapitulatif</p>
             <p class="color-four bg1 ">Mon projet</p>
-            <p class="color-first pret"><%= session.getAttribute("projectType") %>
+            <p class="color-first pret">${project}
             </p>
             <p class="color-four bg1">Coordonnées et infos personnelles</p>
             <p class="color-four bg1">Coordonnées et infos personnelles</p>

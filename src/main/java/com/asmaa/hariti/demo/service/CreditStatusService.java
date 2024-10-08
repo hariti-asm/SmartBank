@@ -6,22 +6,22 @@ import com.asmaa.hariti.demo.model.entities.CreditStatus;
 public class CreditStatusService {
 
 
-    private final CreditStatusDAO creditRequestStatusDAO;
+    private CreditStatusDAO creditRequestStatusDAO = null;
     public void CreditRequestService() {
     }
-    public CreditStatusService(CreditStatusDAO creditRequestStatusDAO) {
+    public CreditStatusService() {
         this.creditRequestStatusDAO = creditRequestStatusDAO;
     }
 
-    public CreditStatus createCreditStatus(CreditStatus CreditStatus) {
-        return this.creditRequestStatusDAO.save(CreditStatus);
+    public Long createCreditStatus(CreditStatus CreditStatus) {
+        return this.creditRequestStatusDAO.save(CreditStatus.getId());
     }
-    public CreditStatus updateCreditStatus(CreditStatus CreditStatus) {
-        return this.creditRequestStatusDAO.save(CreditStatus);
+    public Long updateCreditStatus(CreditStatus CreditStatus) {
+        return this.creditRequestStatusDAO.save(CreditStatus.getId());
     }
     public void deleteCreditStatus(CreditStatus CreditStatus) {
          this.creditRequestStatusDAO.deleteCreditStatus(String.valueOf(CreditStatus.getId()));
     }
-    public CreditStatus getCreditStatus(CreditStatus CreditStatus) {
+    public Long getCreditStatus(Long CreditStatus) {
          return this.creditRequestStatusDAO.save(CreditStatus);
     }}

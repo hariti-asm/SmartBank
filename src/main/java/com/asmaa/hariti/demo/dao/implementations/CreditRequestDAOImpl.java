@@ -23,7 +23,7 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             em.getTransaction().begin();
 
             for (CreditStatus status : creditRequest.getStatuses()) {
-                if (status.getId() == null) {
+                if (status == null) {
                     em.persist(status);
                 } else {
                     em.merge(status);
@@ -37,7 +37,7 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-            throw e; // Re-throw the exception for higher-level handling
+            throw e;
         }
         return creditRequest;
     }
@@ -81,14 +81,13 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
             // Ensure all statuses are updated or persisted before updating the request
             for (CreditStatus status : creditRequest.getStatuses()) {
-                if (status.getId() == null) {
+                if (status == null) {
                     em.persist(status);
                 } else {
                     em.merge(status);
                 }
             }
 
-            // Update the CreditRequest
             em.merge(creditRequest);
 
             em.getTransaction().commit();

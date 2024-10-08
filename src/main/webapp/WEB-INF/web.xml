@@ -34,6 +34,14 @@
         <url-pattern>/personalInfo</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>creditRequestServlet</servlet-name>
+        <servlet-class>com.asmaa.hariti.demo.CreditRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>creditRequestServlet</servlet-name>
+        <url-pattern>/creditRequests</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>

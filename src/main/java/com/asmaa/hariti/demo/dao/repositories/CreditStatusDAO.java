@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CreditStatusDAO {
-    CreditStatus save(CreditStatus creditStatus);
+    Long save(Long creditStatus);
     Optional<CreditStatus> getCreditStatus(String creditStatusId);
     List<CreditStatus> getAllCreditStatuses();
     void deleteCreditStatus(String creditStatusId);

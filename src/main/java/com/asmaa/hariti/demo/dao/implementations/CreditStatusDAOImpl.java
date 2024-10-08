@@ -3,7 +3,6 @@ package com.asmaa.hariti.demo.dao.implementations;
 import com.asmaa.hariti.demo.dao.repositories.CreditStatusDAO;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Dependent;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -19,7 +18,7 @@ public class CreditStatusDAOImpl implements CreditStatusDAO {
 
     @Override
     @Transactional
-    public CreditStatus save(CreditStatus creditStatus) {
+    public Long save(Long creditStatus) {
         em.persist(creditStatus);
         return creditStatus;
     }

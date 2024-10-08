@@ -17,9 +17,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@WebServlet(name = "personalInfoServlet", value = "/personalInfo")
+@WebServlet(name = "personalInfoServlet", urlPatterns = {"/personalInfo"})
 public class PersonalInfoServlet extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(PersonalInfoServlet.class.getName());
 
     private CreditRequestService creditRequestService;
 
@@ -39,43 +42,50 @@ public class PersonalInfoServlet extends HttpServlet {
         }
     }
 
-
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOGGER.info("Handling GET request in PersonalInfoServlet");
         HttpSession session = request.getSession();
 
-        String project = (String) session.getAttribute("project");
-        String job = (String) session.getAttribute("job");
-        String amount = (String) session.getAttribute("amount");
-        String duration = (String) session.getAttribute("duration");
-        String email = (String) session.getAttribute("email");
-        String phone = (String) session.getAttribute("phone");
-        Double folderCost = (Double) session.getAttribute("folderCost");
-        String firstName = (String) session.getAttribute("firstName");
-        String lastName = (String) session.getAttribute("lastName");
-        System.out.println("PersonalInfoServlet doGet - Job from session: " + job);
+        try {
+            String project = (String) session.getAttribute("project");
+            String job = (String) session.getAttribute("job");
+            BigDecimal amount = (BigDecimal) session.getAttribute("amount");
+            Integer duration = (Integer) session.getAttribute("duration");
+            String email = (String) session.getAttribute("email");
+            String phone = (String) session.getAttribute("phone");
+            BigDecimal folderCost = (BigDecimal) session.getAttribute("folderCost");
+            String firstName = (String) session.getAttribute("firstName");
+            String lastName = (String) session.getAttribute("lastName");
 
-        request.setAttribute("email", email);
-        request.setAttribute("phone", phone);
-        request.setAttribute("firstName", firstName);
-        request.setAttribute("lastName", lastName);
-        request.setAttribute("project", project);
-        request.setAttribute("job", job);
-        request.setAttribute("amount", amount);
-        request.setAttribute("duration", duration);
-        request.setAttribute("folderCost", folderCost);
+            LOGGER.info("Retrieved from session - Job: " + job + ", Amount: " + amount + ", Duration: " + duration);
 
-        request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
+            request.setAttribute("project", project);
+            request.setAttribute("job", job);
+            request.setAttribute("amount", amount);
+            request.setAttribute("duration", duration);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("folderCost", folderCost);
+            request.setAttribute("firstName", firstName);
+            request.setAttribute("lastName", lastName);
+
+            request.getRequestDispatcher("/WEB-INF/views/personalInfo.jsp").forward(request, response);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Error in PersonalInfoServlet doGet", e);
+            session.setAttribute("errorMessage", "An unexpected error occurred. Please try again.");
+            response.sendRedirect(request.getContextPath() + "/error");
+        }
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doPost method called");
+        LOGGER.info("Handling POST request in PersonalInfoServlet");
         HttpSession session = request.getSession();
         List<String> validationErrors = new ArrayList<>();
 
         try {
             CreditRequest creditRequest = new CreditRequest();
-
             creditRequest.setFirstName(getRequiredParameter(request, "firstName"));
             creditRequest.setLastName(getRequiredParameter(request, "lastName"));
             creditRequest.setCin(getRequiredParameter(request, "cin"));
@@ -96,14 +106,14 @@ public class PersonalInfoServlet extends HttpServlet {
             creditRequest.setPhone((String) session.getAttribute("phone"));
             creditRequest.setJob((String) session.getAttribute("job"));
 
-            String amount = (String) session.getAttribute("amount");
-            if (amount != null && !amount.isEmpty()) {
-                creditRequest.setRevenues(new BigDecimal(amount));
+            BigDecimal amount = (BigDecimal) session.getAttribute("amount");
+            if (amount != null) {
+                creditRequest.setAmount(amount);
             }
 
-            String duration = (String) session.getAttribute("duration");
-            if (duration != null && !duration.isEmpty()) {
-                creditRequest.setDuration(Integer.parseInt(duration));
+            Integer duration = (Integer) session.getAttribute("duration");
+            if (duration != null) {
+                creditRequest.setDuration(duration);
             }
 
             String monthlyPayment = request.getParameter("monthlyPayment");
@@ -111,36 +121,35 @@ public class PersonalInfoServlet extends HttpServlet {
                 creditRequest.setMonthlyPayment(new BigDecimal(monthlyPayment));
             }
 
-            String folderCost = (String) session.getAttribute("folderCost");
-            if (folderCost != null && !folderCost.isEmpty()) {
-                creditRequest.setFolderCost(new BigDecimal(folderCost));
+            BigDecimal folderCost = (BigDecimal) session.getAttribute("folderCost");
+            if (folderCost != null) {
+                creditRequest.setFolderCost(folderCost);
             }
 
             creditRequest.setRequestDate(LocalDate.now());
 
-            // Validate the credit request
             validationErrors.addAll(CreditRequestValidator.validate(creditRequest));
 
             if (!validationErrors.isEmpty()) {
+                LOGGER.info("Validation errors: " + validationErrors);
                 request.setAttribute("validationErrors", validationErrors);
                 setRequestAttributes(request, creditRequest);
-                request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/personalInfo.jsp").forward(request, response);
                 return;
             }
 
-            System.out.println("Calling creditRequestService.createCreditRequest");
+            LOGGER.info("Creating credit request");
             creditRequestService.createCreditRequest(creditRequest);
-            System.out.println("CreditRequest created successfully");
+            LOGGER.info("Credit request created successfully");
             request.setAttribute("message", "Credit request submitted successfully!");
-            request.getRequestDispatcher("/success.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/success.jsp").forward(request, response);
 
         } catch (Exception e) {
-            System.out.println("Exception caught: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Error in PersonalInfoServlet doPost", e);
             validationErrors.add("An error occurred while processing your request: " + e.getMessage());
             request.setAttribute("validationErrors", validationErrors);
             setRequestAttributes(request, new CreditRequest());
-            request.getRequestDispatcher("/personalInfo.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/personalInfo.jsp").forward(request, response);
         }
     }
 
@@ -151,11 +160,12 @@ public class PersonalInfoServlet extends HttpServlet {
         request.setAttribute("email", creditRequest.getEmail());
         request.setAttribute("phone", creditRequest.getPhone());
         request.setAttribute("job", creditRequest.getJob());
-        request.setAttribute("amount", creditRequest.getRevenues());
+        request.setAttribute("amount", creditRequest.getAmount());
         request.setAttribute("duration", creditRequest.getDuration());
         request.setAttribute("birthdate", creditRequest.getBirthdate());
         request.setAttribute("workdate", creditRequest.getWorkDate());
         request.setAttribute("monthlyPayment", creditRequest.getMonthlyPayment());
+        request.setAttribute("revenues", creditRequest.getRevenues());
         request.setAttribute("folderCost", creditRequest.getFolderCost());
     }
 
@@ -167,20 +177,11 @@ public class PersonalInfoServlet extends HttpServlet {
         return value.trim();
     }
 
-
     private LocalDate parseLocalDate(String dateStr) {
         try {
             return LocalDate.parse(dateStr);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid date format. Please use YYYY-MM-DD.");
-        }
-    }
-
-    private BigDecimal parseBigDecimal(String numStr) {
-        try {
-            return new BigDecimal(numStr);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid number format for: " + numStr);
         }
     }
 }
