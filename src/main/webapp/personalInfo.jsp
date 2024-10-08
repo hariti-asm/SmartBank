@@ -46,23 +46,36 @@
                     </svg>
                 </div>
             </div>
+            <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+            <c:if test="${not empty validationErrors}">
+                <div class="error-messages">
+                    <ul>
+                        <c:forEach var="error" items="${validationErrors}">
+                            <li>${error}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </c:if>
             <form action="${pageContext.request.contextPath}/personalInfo" method="post">
                 <div class="margin-x-1">
                     <div class="radio-container">
                         <label for="civility" class="radio-title">Civilité</label>
                         <div class="radio-group" id="civility">
                             <label class="custom-radio">
-                                <input type="radio" name="civility" value="monsieur" required>
+                                <input type="radio" name="civility"
+                                       value="monsieur" ${civility == 'monsieur' ? 'checked' : ''} required>
                                 <div class="custom_field"></div>
                                 <span class="fs1 color-four">Monsieur</span>
                             </label>
                             <label class="custom-radio">
-                                <input type="radio" name="civility" value="madame">
+                                <input type="radio" name="civility"
+                                       value="madame" ${civility == 'madame' ? 'checked' : ''}>
                                 <div class="custom_field"></div>
                                 <span class="fs1 color-four">Madame</span>
                             </label>
                             <label class="custom-radio">
-                                <input type="radio" name="civility" value="mademoiselle">
+                                <input type="radio" name="civility"
+                                       value="mademoiselle" ${civility == 'mademoiselle' ? 'checked' : ''}>
                                 <div class="custom_field"></div>
                                 <span class="fs1 color-four">Mademoiselle</span>
                             </label>
@@ -70,34 +83,36 @@
                     </div>
 
                     <div class="m-t-5 input-container">
-                        <input type="text" name="lastName" id="lastName" class="custom-input" required>
-                        <label for="lastName" class="custom-label">first name : ${firstName}</label>
+                        <input type="text" name="lastName" id="lastName" class="custom-input" required
+                               value="${lastName}">
+                        <label for="lastName" class="custom-label">Nom</label>
                     </div>
                     <div class="m-t-9 input-container">
-                        <input type="text" name="firstName" id="firstName" class="custom-input" required>
-                        <label for="firstName" class="custom-label">Last name : ${lastName}</label>
+                        <input type="text" name="firstName" id="firstName" class="custom-input" required
+                               value="${firstName}">
+                        <label for="firstName" class="custom-label">Prénom</label>
                     </div>
 
                     <div class="m-t-9 input-container">
-                        <input type="text" name="cin" id="cin" class="custom-input" required>
+                        <input type="text" name="cin" id="cin" class="custom-input" required value="${cin}">
                         <label for="cin" class="custom-label">Numéro CIN / Carte de séjour*</label>
                     </div>
 
                     <div class="m-t-9 input-container">
                         <input type="text" name="birthdate" id="birthDate" placeholder="YYYY-MM-DD" class="custom-input"
-                               required>
+                               required value="${birthdate}">
                         <label for="birthDate" class="custom-label">Date de naissance*</label>
                     </div>
 
                     <div class="m-t-9 input-container">
                         <input type="text" name="workdate" id="workdate"
-                               placeholder="YYYY-MM-DD" class="custom-input" required>
-                        <label for="workdate" class="custom-label">Date d'embauche/début de
-                            l'activité*</label>
+                               placeholder="YYYY-MM-DD" class="custom-input" required value="${workdate}">
+                        <label for="workdate" class="custom-label">Date d'embauche/début de l'activité*</label>
                     </div>
 
                     <div class="m-t-9 input-container">
-                        <input type="number" name="monthlyPayment" id="monthlyPayment" class="custom-input" required>
+                        <input type="number" name="monthlyPayment" id="monthlyPayment" class="custom-input" required
+                               value="${monthlyPayment}">
                         <label for="monthlyPayment" class="custom-label">Total revenus mensuels (net en DH)*</label>
                     </div>
 
@@ -105,12 +120,14 @@
                         <label for="hasActivateCredits" class="radio-title">Avez-vous des crédits en cours ?</label>
                         <div class="radio-group" id="hasActivateCredits">
                             <label class="custom-radio">
-                                <input type="radio" name="hasActivateCredits" value="oui" required>
+                                <input type="radio" name="hasActivateCredits"
+                                       value="oui" ${hasActivateCredits == 'oui' ? 'checked' : ''} required>
                                 <div class="custom_field"></div>
                                 <span class="fs1 color-four">Oui</span>
                             </label>
                             <label class="custom-radio">
-                                <input type="radio" name="hasActivateCredits" value="non">
+                                <input type="radio" name="hasActivateCredits"
+                                       value="non" ${hasActivateCredits == 'non' ? 'checked' : ''}>
                                 <div class="custom_field"></div>
                                 <span class="fs1 color-four">Non</span>
                             </label>
@@ -119,7 +136,7 @@
 
                     <div class="flex-center m-b-10">
                         <button class="button2 m-t-5" type="submit">
-                            demander credit
+                            Demander crédit
                         </button>
                         <button class="button2 m-t-5">
                             <p class="p-9">Voir mon récapitulatif</p>
@@ -173,16 +190,6 @@
         </div>
     </div>
 </div>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:if test="${not empty validationErrors}">
-    <div class="error-messages">
-        <ul>
-            <c:forEach var="error" items="${validationErrors}">
-                <li>${error}</li>
-            </c:forEach>
-        </ul>
-    </div>
-</c:if>
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/personnal_info.js"></script>
 </body>
 </html>
