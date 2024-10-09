@@ -19,19 +19,18 @@ public class CreditRequestStatusHistory {
     @JoinColumn(name = "status_id", nullable = false)
     private CreditStatus status;
 
-    @Column(name = "change_date", nullable = false)
-    private LocalDateTime changeDate;
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
     public CreditRequestStatusHistory() {
     }
 
-    public CreditRequestStatusHistory(CreditRequest creditRequest, CreditStatus status, LocalDateTime changeDate) {
+    public CreditRequestStatusHistory(CreditRequest creditRequest, CreditStatus status, LocalDateTime updatedAt) {
         this.creditRequest = creditRequest;
         this.status = status;
-        this.changeDate = changeDate;
+        this.updatedAt = updatedAt;
     }
 
-    // Getters and setters
 
     public Long getId() {
         return id;
@@ -57,11 +56,12 @@ public class CreditRequestStatusHistory {
         this.status = status;
     }
 
-    public LocalDateTime getChangeDate() {
-        return changeDate;
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setChangeDate(LocalDateTime changeDate) {
-        this.changeDate = changeDate;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

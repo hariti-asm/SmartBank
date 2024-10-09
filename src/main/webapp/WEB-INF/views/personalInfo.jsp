@@ -111,7 +111,7 @@
                     </div>
 
                     <div class="m-t-9 input-container">
-                        <input type="number" name="revenues" id="monthlyPayment" class="custom-input" required
+                        <input type="number" name="monthlyPayment" id="monthlyPayment" class="custom-input" required
                                >
                         <label for="monthlyPayment" class="custom-label">Total revenus mensuels (net en DH)*</label>
                     </div>

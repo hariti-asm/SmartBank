@@ -42,6 +42,14 @@
         <servlet-name>creditRequestServlet</servlet-name>
         <url-pattern>/creditRequests</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>updateRequestServlet</servlet-name>
+        <servlet-class>com.asmaa.hariti.demo.UpdateRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>updateRequestServlet</servlet-name>
+        <url-pattern>/api/creditRequests/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>

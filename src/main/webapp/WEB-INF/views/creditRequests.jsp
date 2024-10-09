@@ -36,19 +36,20 @@
             </thead>
             <tbody>
             <c:forEach var="creditRequest" items="${creditRequestList}">
-                <tr>
+                <tr data-id="${creditRequest.id}">
                     <td>${creditRequest.id}</td>
                     <td>${creditRequest.firstName}</td>
                     <td>${creditRequest.lastName}</td>
                     <td>${creditRequest.cin}</td>
                     <td>${creditRequest.job}</td>
-                    <td> ${creditRequest.monthlyPayment}</td>
+                    <td>${creditRequest.monthlyPayment}</td>
                     <td>${creditRequest.revenues}</td>
-                    <td>${creditRequest.requestDate}</td>
+                    <td>${creditRequest.createdAt}</td>
                     <td>
-                        <c:forEach var="status" items="${creditRequest.statuses}">
-                            ${status.name}
+                        <c:forEach var="status" items="${creditRequest.statusHistory}">
+                            ${status.status.name}
                         </c:forEach>
+
                     </td>
                     <td><button class="view-status-btn" onclick="openModal(${creditRequest.id})">View Status</button></td>
                 </tr>
@@ -76,11 +77,12 @@
         <textarea id="description" rows="4" placeholder="Enter description..."></textarea>
 
         <button class="btn" onclick="updateStatus()">Update</button>
+
+        <div id="statusHistory"></div>
     </div>
 </div>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/javascript/requests.js"></script>
 
-</script>
 </body>
 </html>

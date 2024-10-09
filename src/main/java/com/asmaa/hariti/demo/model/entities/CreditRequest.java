@@ -2,7 +2,6 @@ package com.asmaa.hariti.demo.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -53,6 +52,16 @@ public class CreditRequest {
     @Column(name = "amount", nullable = true, precision = 10, scale = 2)
     private BigDecimal amount;
 
+    // No @Temporal here, LocalDate is automatically mapped
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDate createdAt;
+
+    // Automatically set created_at to the current local date
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+    }
+
     @OneToMany(mappedBy = "creditRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CreditRequestStatusHistory> statusHistory = new ArrayList<>();
 
@@ -98,6 +107,16 @@ public class CreditRequest {
         this.amount = amount;
     }
 
+    // Getters and Setters...
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Long getId() {
         return id;
     }
@@ -106,75 +125,75 @@ public class CreditRequest {
         this.id = id;
     }
 
-    public String getFirstName() {
+    public @Size(max = 100, message = "First name must not exceed 100 characters") String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@Size(max = 100, message = "First name must not exceed 100 characters") String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public @Size(max = 100, message = "Last name must not exceed 100 characters") String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@Size(max = 100, message = "Last name must not exceed 100 characters") String lastName) {
         this.lastName = lastName;
     }
 
-    public String getCin() {
+    public @Size(max = 20, message = "CIN must not exceed 20 characters") String getCin() {
         return cin;
     }
 
-    public void setCin(String cin) {
+    public void setCin(@Size(max = 20, message = "CIN must not exceed 20 characters") String cin) {
         this.cin = cin;
     }
 
-    public LocalDate getBirthdate() {
+    public @Past(message = "Birthdate must be in the past") LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(LocalDate birthdate) {
+    public void setBirthdate(@Past(message = "Birthdate must be in the past") LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
-    public LocalDate getWorkDate() {
+    public @PastOrPresent(message = "Work date must not be in the future") LocalDate getWorkDate() {
         return workDate;
     }
 
-    public void setWorkDate(LocalDate workDate) {
+    public void setWorkDate(@PastOrPresent(message = "Work date must not be in the future") LocalDate workDate) {
         this.workDate = workDate;
     }
 
-    public String getJob() {
+    public @NotBlank(message = "Job is required") String getJob() {
         return job;
     }
 
-    public void setJob(String job) {
+    public void setJob(@NotBlank(message = "Job is required") String job) {
         this.job = job;
     }
 
-    public BigDecimal getRevenues() {
+    public @PositiveOrZero(message = "Revenues must be positive or zero") BigDecimal getRevenues() {
         return revenues;
     }
 
-    public void setRevenues(BigDecimal revenues) {
+    public void setRevenues(@PositiveOrZero(message = "Revenues must be positive or zero") BigDecimal revenues) {
         this.revenues = revenues;
     }
 
-    public LocalDate getRequestDate() {
+    public @PastOrPresent(message = "Request date must not be in the future") LocalDate getRequestDate() {
         return requestDate;
     }
 
-    public void setRequestDate(LocalDate requestDate) {
+    public void setRequestDate(@PastOrPresent(message = "Request date must not be in the future") LocalDate requestDate) {
         this.requestDate = requestDate;
     }
 
-    public BigDecimal getAmount() {
+    public @Positive(message = "Amount must be positive") BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(@Positive(message = "Amount must be positive") BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -186,48 +205,51 @@ public class CreditRequest {
         this.statusHistory = statusHistory;
     }
 
-    public void addStatusHistory(CreditStatus status) {
-        CreditRequestStatusHistory history = new CreditRequestStatusHistory(this, status, LocalDateTime.now());
-        statusHistory.add(history);
-    }
-
-    public String getPhone() {
+    public @Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits") String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(@Pattern(regexp = "^(07|06)\\d{8}$", message = "Phone number must start with 07 or 06 and contain exactly 10 digits") String phone) {
         this.phone = phone;
     }
 
-    public String getEmail() {
+    public @Email(message = "Invalid email format") String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@Email(message = "Invalid email format") String email) {
         this.email = email;
     }
 
-    public Integer getDuration() {
+    public @Positive(message = "Duration must be positive") Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(@Positive(message = "Duration must be positive") Integer duration) {
         this.duration = duration;
     }
 
-    public BigDecimal getMonthlyPayment() {
+    public @PositiveOrZero(message = "Monthly payment must be positive or zero") BigDecimal getMonthlyPayment() {
         return monthlyPayment;
     }
 
-    public void setMonthlyPayment(BigDecimal monthlyPayment) {
+    public void setMonthlyPayment(@PositiveOrZero(message = "Monthly payment must be positive or zero") BigDecimal monthlyPayment) {
         this.monthlyPayment = monthlyPayment;
     }
 
-    public BigDecimal getFolderCost() {
+    public @PositiveOrZero(message = "Folder cost must be positive or zero") BigDecimal getFolderCost() {
         return folderCost;
     }
 
-    public void setFolderCost(BigDecimal folderCost) {
+    public void setFolderCost(@PositiveOrZero(message = "Folder cost must be positive or zero") BigDecimal folderCost) {
         this.folderCost = folderCost;
+    }
+
+
+
+
+    public void addStatusHistory(CreditStatus status) {
+        CreditRequestStatusHistory history = new CreditRequestStatusHistory(this, status, LocalDateTime.now());
+        statusHistory.add(history);
     }
 }

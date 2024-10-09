@@ -45,8 +45,11 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
     @Override
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
-        return Optional.empty();
+        EntityManager em = getEntityManager();
+        CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
+        return Optional.ofNullable(creditRequest);
     }
+
 
 
     @Override
