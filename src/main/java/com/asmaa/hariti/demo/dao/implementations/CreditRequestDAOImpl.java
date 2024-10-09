@@ -3,10 +3,12 @@ package com.asmaa.hariti.demo.dao.implementations;
 import com.asmaa.hariti.demo.dao.repositories.CreditRequestDAO;
 import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
+import com.asmaa.hariti.demo.model.entities.CreditRequestStatusHistory;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,15 +24,14 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
         try {
             em.getTransaction().begin();
 
-            for (CreditStatus status : creditRequest.getStatuses()) {
-                if (status == null) {
-                    em.persist(status);
-                } else {
-                    em.merge(status);
-                }
-            }
-
             em.persist(creditRequest);
+
+            // If there's an initial status, add it to the history
+            if (!creditRequest.getStatusHistory().isEmpty()) {
+                CreditRequestStatusHistory initialStatus = creditRequest.getStatusHistory().get(0);
+                initialStatus.setCreditRequest(creditRequest);
+                em.persist(initialStatus);
+            }
 
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -78,18 +79,7 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-
-            // Ensure all statuses are updated or persisted before updating the request
-            for (CreditStatus status : creditRequest.getStatuses()) {
-                if (status == null) {
-                    em.persist(status);
-                } else {
-                    em.merge(status);
-                }
-            }
-
             em.merge(creditRequest);
-
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
@@ -98,12 +88,31 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             throw new RuntimeException("Failed to update CreditRequest", e);
         }
     }
-
     @Override
     public List<CreditRequest> getCreditRequestsByStatus(CreditStatus status) {
         return getEntityManager().createQuery(
-                        "SELECT cr FROM CreditRequest cr JOIN cr.statuses s WHERE s = :status", CreditRequest.class)
+                        "SELECT DISTINCT cr FROM CreditRequest cr JOIN cr.statusHistory sh WHERE sh.status = :status",
+                        CreditRequest.class)
                 .setParameter("status", status)
                 .getResultList();
     }
+    public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
+            if (creditRequest != null) {
+                CreditRequestStatusHistory newStatusHistory = new CreditRequestStatusHistory(creditRequest, newStatus, LocalDateTime.now());
+                creditRequest.getStatusHistory().add(newStatusHistory);
+                em.persist(newStatusHistory);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw new RuntimeException("Failed to add status to CreditRequest", e);
+        }
+    }
+
 }

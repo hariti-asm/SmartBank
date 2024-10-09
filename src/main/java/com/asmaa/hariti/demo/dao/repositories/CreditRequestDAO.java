@@ -13,4 +13,6 @@ public interface CreditRequestDAO {
     void deleteCreditRequest(Long creditRequestId);
     void updateCreditRequest(CreditRequest creditRequest);
     List<CreditRequest> getCreditRequestsByStatus(CreditStatus status);
-}
+    public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) ;
+
+    }

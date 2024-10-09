@@ -29,9 +29,9 @@ public class CreditRequestService {
         }
     }
 
-    public void createCreditRequest(CreditRequest creditRequest) {
+    public CreditRequest createCreditRequest(CreditRequest creditRequest) {
         initializeDAO();
-        creditRequestDAO.save(creditRequest);
+        return creditRequestDAO.save(creditRequest);
     }
 
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
@@ -57,5 +57,23 @@ public class CreditRequestService {
     public List<CreditRequest> getCreditRequestsByStatus(CreditStatus status) {
         initializeDAO();
         return creditRequestDAO.getCreditRequestsByStatus(status);
+    }
+
+    public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) {
+        initializeDAO();
+        if (creditRequestDAO instanceof CreditRequestDAOImpl) {
+            ((CreditRequestDAOImpl) creditRequestDAO).addStatusToCreditRequest(creditRequestId, newStatus);
+        } else {
+            throw new UnsupportedOperationException("This operation is not supported by the current DAO implementation");
+        }
+    }
+
+    public CreditStatus getCurrentStatus(Long creditRequestId) {
+        initializeDAO();
+        Optional<CreditRequest> creditRequest = getCreditRequest(creditRequestId);
+        return creditRequest.map(cr -> {
+            var statusHistory = cr.getStatusHistory();
+            return statusHistory.isEmpty() ? null : statusHistory.get(statusHistory.size() - 1).getStatus();
+        }).orElse(null);
     }
 }

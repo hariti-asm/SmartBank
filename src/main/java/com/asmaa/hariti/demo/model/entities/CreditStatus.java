@@ -2,7 +2,7 @@ package com.asmaa.hariti.demo.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
+import java.util.List;
 
 @Entity
 @Table(name = "credit_status")
@@ -18,6 +18,8 @@ public class CreditStatus {
     @Column(name = "description", nullable = true)
     private String description;
 
+    @OneToMany(mappedBy = "status")
+    private List<CreditRequestStatusHistory> statusHistories;
 
     public CreditStatus() {
     }
@@ -25,6 +27,15 @@ public class CreditStatus {
     public CreditStatus(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+
+    public List<CreditRequestStatusHistory> getStatusHistories() {
+        return statusHistories;
+    }
+
+    public void setStatusHistories(List<CreditRequestStatusHistory> statusHistories) {
+        this.statusHistories = statusHistories;
     }
 
     public Long getId() {

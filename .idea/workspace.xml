@@ -11,26 +11,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CreditRequestServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/success.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/update-request.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/javascript/requests.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequestStatusHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CoordinateServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CoordinateServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/HomeServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/HomeServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditStatusDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditStatusDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/repositories/CreditStatusDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/repositories/CreditStatusDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/repositories/CreditRequestDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/repositories/CreditRequestDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/service/CreditStatusService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/service/CreditStatusService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/coordinates.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/coordinates.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/coordinates.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/requests.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/personalInfo.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/personalInfo.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/success.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/creditRequests.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
