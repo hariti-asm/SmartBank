@@ -30,12 +30,13 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             if (creditRequest.getStatusHistory() != null && !creditRequest.getStatusHistory().isEmpty()) {
                 for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
                     CreditStatus status = statusHistory.getStatus();
-                    if (status.getId() == null) {
-                        em.persist(status);
-                    } else {
-                        status = em.merge(status);
-                    }
-                    statusHistory.setStatus(status);
+
+                    CreditStatus newStatus = new CreditStatus();
+                    newStatus.setName(status.getName());
+                    newStatus.setDescription(status.getDescription());
+                    em.persist(newStatus);
+
+                    statusHistory.setStatus(newStatus);
                 }
             }
 
@@ -45,14 +46,12 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
                 creditRequest = em.merge(creditRequest);
             }
 
-            if (creditRequest.getStatusHistory() != null) {
-                for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
-                    if (statusHistory.getId() == null) {
-                        statusHistory.setCreditRequest(creditRequest);
-                        em.persist(statusHistory);
-                    } else {
-                        em.merge(statusHistory);
-                    }
+            for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
+                if (statusHistory.getId() == null) {
+                    statusHistory.setCreditRequest(creditRequest);
+                    em.persist(statusHistory);
+                } else {
+                    em.merge(statusHistory);
                 }
             }
 
@@ -64,7 +63,8 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             throw new RuntimeException("Failed to save CreditRequest", e);
         }
         return creditRequest;
-    }    @Override
+    }
+    @Override
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
         EntityManager em = getEntityManager();
         CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
