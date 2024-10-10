@@ -20,6 +20,8 @@ public class CreditRequestStatusHistory {
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private CreditStatus status;
+    @Column(name = "description", nullable = true)
+    private String description;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
@@ -66,4 +68,12 @@ public class CreditRequestStatusHistory {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

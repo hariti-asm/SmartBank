@@ -115,21 +115,25 @@ public class UpdateRequestServlet extends HttpServlet {
             JsonReader jsonReader = Json.createReader(request.getReader());
             JsonObject jsonObject = jsonReader.readObject();
             String statusName = jsonObject.getString("name");
-            String description = jsonObject.getString("description");
+            String statusDescription = jsonObject.getString("description");
+            String pivotDescription = jsonObject.getString("pivotDescription", "Status updated"); // Default value if not provided
 
             Optional<CreditRequest> optionalCreditRequest = creditRequestService.getCreditRequest(id);
             if (optionalCreditRequest.isPresent()) {
                 CreditRequest creditRequest = optionalCreditRequest.get();
-                CreditStatus newStatus = new CreditStatus(statusName, description);
+                CreditStatus newStatus = new CreditStatus(statusName, statusDescription);
                 CreditRequestStatusHistory newStatusHistory = new CreditRequestStatusHistory(creditRequest, newStatus, LocalDateTime.now());
+                newStatusHistory.setDescription(pivotDescription); // Set the description for the pivot table
                 creditRequest.getStatusHistory().add(newStatusHistory);
 
                 CreditRequest updatedRequest = creditRequestService.createCreditRequest(creditRequest);
 
                 sendJsonResponse(response, HttpServletResponse.SC_OK, Json.createObjectBuilder()
-                        .add("message", "New credit request created with updated status")
+                        .add("message", "Credit request updated with new status")
                         .add("newStatus", statusName)
-                        .add("newCreditRequestId", updatedRequest.getId())
+                        .add("newStatusDescription", statusDescription)
+                        .add("pivotDescription", pivotDescription)
+                        .add("updatedCreditRequestId", updatedRequest.getId())
                         .build());
             } else {
                 sendJsonResponse(response, HttpServletResponse.SC_NOT_FOUND, Json.createObjectBuilder()
@@ -152,7 +156,6 @@ public class UpdateRequestServlet extends HttpServlet {
                     .build());
         }
     }
-
     private void sendJsonResponse(HttpServletResponse response, int status, JsonObject jsonObject) throws IOException {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

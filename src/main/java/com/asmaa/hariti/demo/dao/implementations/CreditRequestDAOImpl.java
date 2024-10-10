@@ -33,10 +33,11 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
                     CreditStatus newStatus = new CreditStatus();
                     newStatus.setName(status.getName());
-                    newStatus.setDescription(status.getDescription());
                     em.persist(newStatus);
 
                     statusHistory.setStatus(newStatus);
+
+                    statusHistory.setDescription("Status changed to " + status.getName());
                 }
             }
 

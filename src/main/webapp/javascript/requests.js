@@ -11,7 +11,40 @@ function closeModal() {
     const modal = document.getElementById('statusModal');
     modal.style.display = 'none';
 }
+function applyFilters() {
+    const dateFilter = document.getElementById('dateFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+    const table = document.getElementById('creditRequestsTable');
+    const rows = table.getElementsByTagName('tr');
 
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const rowDate = row.getAttribute('data-date');
+        const rowStatus = row.getAttribute('data-status').toLowerCase();
+
+        let showRow = true;
+
+        if (dateFilter && rowDate !== dateFilter) {
+            showRow = false;
+        }
+
+        if (statusFilter && rowStatus !== statusFilter) {
+            showRow = false;
+        }
+
+        row.style.display = showRow ? '' : 'none';
+    }
+}
+
+function resetFilters() {
+    document.getElementById('dateFilter').value = '';
+    document.getElementById('statusFilter').value = '';
+    const table = document.getElementById('creditRequestsTable');
+    const rows = table.getElementsByTagName('tr');
+    for (let i = 1; i < rows.length; i++) {
+        rows[i].style.display = '';
+    }
+}
 function fetchStatusHistory(requestId) {
     fetch(`http://localhost:8080/demo_war/api/creditRequests/${requestId}/statushistory`)
         .then(response => {

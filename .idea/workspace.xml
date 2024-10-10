@@ -10,7 +10,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="" />
+    <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequestStatusHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditRequestStatusHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/model/entities/CreditStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/creditRequests.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/creditRequests.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/requests.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/requests.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascript/requests.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascript/requests.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -402,11 +410,6 @@
           <line>154</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/creditRequests.jsp</url>
-          <line>48</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/webapp/javascript/script.js</url>
           <line>1</line>
@@ -414,7 +417,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/webapp/javascript/requests.js</url>
-          <line>14</line>
+          <line>47</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="12" />
         </line-breakpoint>

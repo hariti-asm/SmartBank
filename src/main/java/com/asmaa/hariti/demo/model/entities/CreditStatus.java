@@ -16,8 +16,6 @@ public class CreditStatus {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = true)
-    private String description;
 
     @OneToMany(mappedBy = "status")
     private List<CreditRequestStatusHistory> statusHistories;
@@ -28,7 +26,6 @@ public class CreditStatus {
 
     public CreditStatus(String name, String description) {
         this.name = name;
-        this.description = description;
     }
 
 
@@ -59,13 +56,6 @@ public class CreditStatus {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
 
 }
