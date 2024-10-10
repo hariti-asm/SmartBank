@@ -16,7 +16,9 @@ function fetchStatusHistory(requestId) {
     fetch(`http://localhost:8080/demo_war/api/creditRequests/${requestId}/statushistory`)
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json().then(errorData => {
+                    throw new Error(JSON.stringify(errorData, null, 2));
+                });
             }
             return response.json();
         })
@@ -34,7 +36,8 @@ function fetchStatusHistory(requestId) {
         .catch(error => {
             console.error('Error fetching status history:', error);
             const historyDiv = document.getElementById('statusHistory');
-            historyDiv.innerHTML = `<p>Error fetching status history: ${error.message}</p>`;
+            historyDiv.innerHTML = `<p>Error fetching status history:</p><pre>${error.message}</pre>`;
+            alert(`Failed to fetch status history. Check the console for details.`);
         });
 }
 
@@ -54,36 +57,35 @@ function updateStatus() {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                return response.json().then(errorData => {
+                    throw new Error(JSON.stringify(errorData, null, 2));
+                });
             }
-            return response.text();
-        })
-        .then(text => {
-            if (!text) {
-                throw new Error('Empty response received from server');
-            }
-            try {
-                return JSON.parse(text);
-            } catch (error) {
-                console.error('Invalid JSON:', text);
-                throw new Error('Invalid JSON response from server');
-            }
+            return response.json();
         })
         .then(data => {
             console.log('Success:', data);
+            // Update the currentRequestId with the new credit request ID
+            currentRequestId = data.newCreditRequestId;
             fetchStatusHistory(currentRequestId);
-            // Update the status in the table without reloading the page
-            const statusCell = document.querySelector(`tr[data-id="${currentRequestId}"] td:nth-child(9)`);
-            if (statusCell) {
-                statusCell.textContent = statusName;
+            // Update the status and ID in the table without reloading the page
+            const row = document.querySelector(`tr[data-id="${currentRequestId}"]`);
+            if (row) {
+                row.setAttribute('data-id', currentRequestId);
+                const statusCell = row.querySelector('td:nth-child(9)');
+                if (statusCell) {
+                    statusCell.textContent = statusName;
+                }
             }
-            alert('Status updated successfully!');
+            alert('New credit request created with updated status!');
         })
         .catch((error) => {
             console.error('Error:', error);
-            alert(`Failed to update status: ${error.message}`);
+            alert(`Failed to update status. Check the console for details.`);
         });
-}window.onclick = function(event) {
+}
+
+window.onclick = function(event) {
     const modal = document.getElementById('statusModal');
     if (event.target == modal) {
         modal.style.display = "none";

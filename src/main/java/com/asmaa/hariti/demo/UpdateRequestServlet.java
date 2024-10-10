@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -36,32 +38,30 @@ public class UpdateRequestServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Received GET request: " + request.getRequestURI());
         String pathInfo = request.getPathInfo();
+        System.out.println("Received GET request: " + request.getRequestURI());
         System.out.println("Path info: " + pathInfo);
+
         if (pathInfo != null && pathInfo.matches("/\\d+/statushistory")) {
             long id = Long.parseLong(pathInfo.split("/")[1]);
             getStatusHistory(id, response);
         } else {
-            System.out.println("Invalid URL for GET request: " + pathInfo);
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid URL for GET request: " + pathInfo);
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
+        System.out.println("Received POST request: " + request.getRequestURI());
+        System.out.println("Path info: " + pathInfo);
+
         if (pathInfo != null && pathInfo.matches("/\\d+/status")) {
             long id = Long.parseLong(pathInfo.split("/")[1]);
-            try (JsonReader jsonReader = Json.createReader(request.getReader())) {
-                JsonObject jsonObject = jsonReader.readObject();
-                String statusName = jsonObject.getString("name");
-                String description = jsonObject.getString("description");
-                CreditStatus newStatus = new CreditStatus(statusName, description);
-                addStatus(id, newStatus, response);
-            }
+            updateStatus(id, request, response);
         } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL for POST request");
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid URL for POST request: " + pathInfo);
         }
     }
 
@@ -94,42 +94,61 @@ public class UpdateRequestServlet extends HttpServlet {
                         .build());
             }
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println("Error fetching CreditRequest: " + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String stackTrace = sw.toString();
+            System.err.println("Full stack trace:");
+            System.err.println(stackTrace);
+
             sendJsonResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Json.createObjectBuilder()
-                    .add("error", "Error fetching status history: " + e.getMessage())
+                    .add("error", "Error fetching status history")
+                    .add("errorMessage", e.getMessage())
+                    .add("stackTrace", stackTrace)
                     .build());
         }
     }
-    private void addStatus(long id, CreditStatus newStatus, HttpServletResponse response) throws IOException {
+
+    private void updateStatus(long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            JsonReader jsonReader = Json.createReader(request.getReader());
+            JsonObject jsonObject = jsonReader.readObject();
+            String statusName = jsonObject.getString("name");
+            String description = jsonObject.getString("description");
+
             Optional<CreditRequest> optionalCreditRequest = creditRequestService.getCreditRequest(id);
             if (optionalCreditRequest.isPresent()) {
                 CreditRequest creditRequest = optionalCreditRequest.get();
-                if (creditRequest.getStatusHistory().isEmpty()) {
-                    CreditRequestStatusHistory initialStatus = new CreditRequestStatusHistory();
-                    initialStatus.setStatus(newStatus);
-                    initialStatus.setUpdatedAt(LocalDateTime.now());
-                    creditRequest.addStatusHistory(initialStatus.getStatus());
-                } else {
-                    creditRequest.addStatusHistory(newStatus);
-                }
-                creditRequestService.updateCreditRequest(creditRequest);
+                CreditStatus newStatus = new CreditStatus(statusName, description);
+                CreditRequestStatusHistory newStatusHistory = new CreditRequestStatusHistory(creditRequest, newStatus, LocalDateTime.now());
+                creditRequest.getStatusHistory().add(newStatusHistory);
 
-                JsonObject jsonResponse = Json.createObjectBuilder()
-                        .add("message", "Status updated successfully")
-                        .add("newStatus", newStatus.getName())
-                        .build();
+                CreditRequest updatedRequest = creditRequestService.createCreditRequest(creditRequest);
 
-                sendJsonResponse(response, HttpServletResponse.SC_OK, jsonResponse);
+                sendJsonResponse(response, HttpServletResponse.SC_OK, Json.createObjectBuilder()
+                        .add("message", "New credit request created with updated status")
+                        .add("newStatus", statusName)
+                        .add("newCreditRequestId", updatedRequest.getId())
+                        .build());
             } else {
                 sendJsonResponse(response, HttpServletResponse.SC_NOT_FOUND, Json.createObjectBuilder()
                         .add("error", "Credit request not found")
                         .build());
             }
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            String stackTrace = sw.toString();
+            System.err.println("Error updating status: " + e.getMessage());
+            System.err.println("Full stack trace:");
+            System.err.println(stackTrace);
+
             sendJsonResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Json.createObjectBuilder()
-                    .add("error", "Error updating status: " + e.getMessage())
+                    .add("error", "Error updating status")
+                    .add("errorMessage", e.getMessage())
+                    .add("stackTrace", stackTrace)
                     .build());
         }
     }
@@ -141,5 +160,6 @@ public class UpdateRequestServlet extends HttpServlet {
         try (JsonWriter jsonWriter = Json.createWriter(response.getWriter())) {
             jsonWriter.writeObject(jsonObject);
         }
-    }
-}
+    }}
+
+

@@ -1,6 +1,8 @@
 package com.asmaa.hariti.demo.model.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+
 import java.time.LocalDateTime;
 
 @Entity

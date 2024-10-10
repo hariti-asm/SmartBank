@@ -6,6 +6,7 @@ import com.asmaa.hariti.demo.model.entities.CreditRequest;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +50,8 @@ public class CreditRequestService {
         creditRequestDAO.deleteCreditRequest(creditRequestId);
     }
 
+    @Transactional
     public void updateCreditRequest(CreditRequest creditRequest) {
-        initializeDAO();
         creditRequestDAO.updateCreditRequest(creditRequest);
     }
 

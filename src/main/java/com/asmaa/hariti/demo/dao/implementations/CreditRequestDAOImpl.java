@@ -7,6 +7,7 @@ import com.asmaa.hariti.demo.model.entities.CreditRequestStatusHistory;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,30 +21,50 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
 
     @Override
     public CreditRequest save(CreditRequest creditRequest) {
-        EntityManager em = getEntityManager();
+        EntityManager em = EntityManagerSingleton.getEntityManager();
+        EntityTransaction transaction = null;
         try {
-            em.getTransaction().begin();
+            transaction = em.getTransaction();
+            transaction.begin();
 
-            em.persist(creditRequest);
-
-            // If there's an initial status, add it to the history
-            if (!creditRequest.getStatusHistory().isEmpty()) {
-                CreditRequestStatusHistory initialStatus = creditRequest.getStatusHistory().get(0);
-                initialStatus.setCreditRequest(creditRequest);
-                em.persist(initialStatus);
+            if (creditRequest.getStatusHistory() != null && !creditRequest.getStatusHistory().isEmpty()) {
+                for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
+                    CreditStatus status = statusHistory.getStatus();
+                    if (status.getId() == null) {
+                        em.persist(status);
+                    } else {
+                        status = em.merge(status);
+                    }
+                    statusHistory.setStatus(status);
+                }
             }
 
-            em.getTransaction().commit();
+            if (creditRequest.getId() == null) {
+                em.persist(creditRequest);
+            } else {
+                creditRequest = em.merge(creditRequest);
+            }
+
+            if (creditRequest.getStatusHistory() != null) {
+                for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
+                    if (statusHistory.getId() == null) {
+                        statusHistory.setCreditRequest(creditRequest);
+                        em.persist(statusHistory);
+                    } else {
+                        em.merge(statusHistory);
+                    }
+                }
+            }
+
+            transaction.commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
             }
-            throw e;
+            throw new RuntimeException("Failed to save CreditRequest", e);
         }
         return creditRequest;
-    }
-
-    @Override
+    }    @Override
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
         EntityManager em = getEntityManager();
         CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
