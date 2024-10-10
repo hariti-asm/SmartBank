@@ -46,10 +46,9 @@
                     <td>${creditRequest.revenues}</td>
                     <td>${creditRequest.createdAt}</td>
                     <td>
-                        <c:forEach var="status" items="${creditRequest.statusHistory}">
-                            ${status.status.name}
-                        </c:forEach>
-
+                        <c:if test="${not empty creditRequest.statusHistory}">
+                            ${creditRequest.statusHistory[creditRequest.statusHistory.size() - 1].status.name}
+                        </c:if>
                     </td>
                     <td><button class="view-status-btn" onclick="openModal(${creditRequest.id})">View Status</button></td>
                 </tr>
