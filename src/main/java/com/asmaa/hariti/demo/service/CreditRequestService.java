@@ -62,19 +62,18 @@ public class CreditRequestService {
 
     public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) {
         initializeDAO();
-        if (creditRequestDAO instanceof CreditRequestDAOImpl) {
-            ((CreditRequestDAOImpl) creditRequestDAO).addStatusToCreditRequest(creditRequestId, newStatus);
-        } else {
-            throw new UnsupportedOperationException("This operation is not supported by the current DAO implementation");
-        }
+        creditRequestDAO.addStatusToCreditRequest(creditRequestId, newStatus);
     }
+
 
     public CreditStatus getCurrentStatus(Long creditRequestId) {
         initializeDAO();
-        Optional<CreditRequest> creditRequest = getCreditRequest(creditRequestId);
-        return creditRequest.map(cr -> {
-            var statusHistory = cr.getStatusHistory();
-            return statusHistory.isEmpty() ? null : statusHistory.get(statusHistory.size() - 1).getStatus();
-        }).orElse(null);
+        return getCreditRequest(creditRequestId)
+                .map(creditRequest -> {
+                    var statusHistory = creditRequest.getStatusHistory();
+                    return statusHistory.isEmpty() ? null : statusHistory.get(statusHistory.size() - 1).getStatus();
+                })
+                .orElse(null);
     }
+
 }

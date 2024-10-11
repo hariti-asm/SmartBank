@@ -45,7 +45,6 @@
                 <th>CIN</th>
                 <th>Job</th>
                 <th>Monthly Payment</th>
-                <th>Revenues</th>
                 <th>Request Date</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -60,7 +59,6 @@
                     <td>${creditRequest.cin}</td>
                     <td>${creditRequest.job}</td>
                     <td>${creditRequest.monthlyPayment}</td>
-                    <td>${creditRequest.revenues}</td>
                     <td>${creditRequest.createdAt}</td>
                     <td>
                         <c:if test="${not empty creditRequest.statusHistory}">

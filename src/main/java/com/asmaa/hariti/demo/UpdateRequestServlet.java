@@ -52,7 +52,7 @@ public class UpdateRequestServlet extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
         System.out.println("Received POST request: " + request.getRequestURI());
         System.out.println("Path info: " + pathInfo);
