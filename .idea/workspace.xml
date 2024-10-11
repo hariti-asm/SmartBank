@@ -11,11 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/CreditStatusServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/UpdateRequestServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/UpdateRequestServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UpdateRequestServletTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditStatusDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditStatusDAOImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/EntityManagerSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/EntityManagerSingleton.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +90,11 @@
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "GitIgnore"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -394,7 +398,7 @@
       <workItem from="1728592277543" duration="3497000" />
       <workItem from="1728637345941" duration="2120000" />
       <workItem from="1728639479672" duration="3418000" />
-      <workItem from="1728643569235" duration="5214000" />
+      <workItem from="1728643569235" duration="7914000" />
     </task>
     <servers />
   </component>
@@ -427,7 +431,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java</url>
-          <line>18</line>
+          <line>23</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">

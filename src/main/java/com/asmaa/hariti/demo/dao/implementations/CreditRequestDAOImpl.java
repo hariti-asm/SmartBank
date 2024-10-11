@@ -1,11 +1,12 @@
 package com.asmaa.hariti.demo.dao.implementations;
 
 import com.asmaa.hariti.demo.dao.repositories.CreditRequestDAO;
-import com.asmaa.hariti.demo.helpers.EntityManagerSingleton;
+import com.asmaa.hariti.demo.helpers.EntityManagerProducer;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
 import com.asmaa.hariti.demo.model.entities.CreditRequestStatusHistory;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
@@ -15,13 +16,17 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class CreditRequestDAOImpl implements CreditRequestDAO {
+
+    @Inject
+    private EntityManagerProducer entityManagerSingleton;
+
     private EntityManager getEntityManager() {
-        return EntityManagerSingleton.getEntityManager();
+        return entityManagerSingleton.getEntityManager();
     }
 
     @Override
     public CreditRequest save(CreditRequest creditRequest) {
-        EntityManager em = EntityManagerSingleton.getEntityManager();
+        EntityManager em = getEntityManager();
         EntityTransaction transaction = null;
         try {
             transaction = em.getTransaction();
@@ -62,82 +67,108 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
                 transaction.rollback();
             }
             throw new RuntimeException("Failed to save CreditRequest", e);
+        } finally {
+            em.close();
         }
         return creditRequest;
     }
+
     @Override
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
         EntityManager em = getEntityManager();
-        CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
-        return Optional.ofNullable(creditRequest);
+        try {
+            CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
+            return Optional.ofNullable(creditRequest);
+        } finally {
+            em.close();
+        }
     }
-
-
 
     @Override
     public List<CreditRequest> getAllCreditRequests() {
-        return getEntityManager().createQuery("SELECT cr FROM CreditRequest cr", CreditRequest.class).getResultList();
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery("SELECT cr FROM CreditRequest cr", CreditRequest.class).getResultList();
+        } finally {
+            em.close();
+        }
     }
-
-
 
     @Override
     public void deleteCreditRequest(Long creditRequestId) {
         EntityManager em = getEntityManager();
+        EntityTransaction transaction = null;
         try {
-            em.getTransaction().begin();
+            transaction = em.getTransaction();
+            transaction.begin();
             CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
             if (creditRequest != null) {
                 em.remove(creditRequest);
             }
-            em.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
             }
             throw new RuntimeException("Failed to delete CreditRequest", e);
+        } finally {
+            em.close();
         }
     }
 
     @Override
     public void updateCreditRequest(CreditRequest creditRequest) {
         EntityManager em = getEntityManager();
+        EntityTransaction transaction = null;
         try {
-            em.getTransaction().begin();
+            transaction = em.getTransaction();
+            transaction.begin();
             em.merge(creditRequest);
-            em.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
             }
             throw new RuntimeException("Failed to update CreditRequest", e);
+        } finally {
+            em.close();
         }
     }
+
     @Override
     public List<CreditRequest> getCreditRequestsByStatus(CreditStatus status) {
-        return getEntityManager().createQuery(
-                        "SELECT DISTINCT cr FROM CreditRequest cr JOIN cr.statusHistory sh WHERE sh.status = :status",
-                        CreditRequest.class)
-                .setParameter("status", status)
-                .getResultList();
-    }
-    public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) {
         EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
+            return em.createQuery(
+                            "SELECT DISTINCT cr FROM CreditRequest cr JOIN cr.statusHistory sh WHERE sh.status = :status",
+                            CreditRequest.class)
+                    .setParameter("status", status)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) {
+        EntityManager em = getEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = em.getTransaction();
+            transaction.begin();
             CreditRequest creditRequest = em.find(CreditRequest.class, creditRequestId);
             if (creditRequest != null) {
                 CreditRequestStatusHistory newStatusHistory = new CreditRequestStatusHistory(creditRequest, newStatus, LocalDateTime.now());
                 creditRequest.getStatusHistory().add(newStatusHistory);
                 em.persist(newStatusHistory);
             }
-            em.getTransaction().commit();
+            transaction.commit();
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
             }
             throw new RuntimeException("Failed to add status to CreditRequest", e);
+        } finally {
+            em.close();
         }
     }
-
 }
