@@ -37,7 +37,7 @@ public class UpdateRequestServlet extends HttpServlet {
         }
     }
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
         System.out.println("Received GET request: " + request.getRequestURI());
         System.out.println("Path info: " + pathInfo);
