@@ -12,9 +12,12 @@
   <component name="ChangeListManager">
     <list default="true" id="4597c35a-d845-4e96-b059-5e4baaec5eeb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CreditRequestServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/CreditRequestServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/PersonalInfoServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/UpdateRequestServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/UpdateRequestServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditStatusDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditStatusDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/EntityManagerSingleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/EntityManagerSingleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/EntityManagerProducer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/helpers/EntityManagerProducer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/service/CreditRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/service/CreditRequestService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +71,7 @@
   "keyToString": {
     "Application.CreditRequestApplication.executor": "Run",
     "JavaScript Debug.Tomcat10.0 JavaScript.executor": "Debug",
+    "Maven.Smart-Bank [clean,install].executor": "Run",
     "Maven.Smart-Bank [dependency:tree].executor": "Run",
     "Maven.Smart-Bank [test].executor": "Run",
     "Maven.demo [clean].executor": "Run",
@@ -109,6 +113,7 @@
     <option name="myCommands">
       <command value="mvn dependency:tree" />
       <command value="mvn test" />
+      <command value="mvn clean install" />
     </option>
   </component>
   <component name="RunDashboard">
@@ -428,11 +433,6 @@
           <url>file://$PROJECT_DIR$/src/main/webapp/WEB-INF/views/personalInfo.jsp</url>
           <line>154</line>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/asmaa/hariti/demo/dao/implementations/CreditRequestDAOImpl.java</url>
-          <line>23</line>
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/main/webapp/javascript/script.js</url>

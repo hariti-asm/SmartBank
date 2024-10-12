@@ -21,21 +21,12 @@ import java.util.Optional;
 
 @WebServlet(name = "updateRequestServlet", urlPatterns = {"/api/creditRequests/*"})
 public class UpdateRequestServlet extends HttpServlet {
-    private CreditRequestService creditRequestService;
 
     public UpdateRequestServlet() {}
 
     @Inject
-    public UpdateRequestServlet(CreditRequestService creditRequestService) {
-        this.creditRequestService = creditRequestService;
-    }
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        if (creditRequestService == null) {
-            creditRequestService = new CreditRequestService();
-        }
-    }
+    private CreditRequestService creditRequestService;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();

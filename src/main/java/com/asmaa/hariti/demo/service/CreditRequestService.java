@@ -1,52 +1,39 @@
 package com.asmaa.hariti.demo.service;
 
 import com.asmaa.hariti.demo.dao.repositories.CreditRequestDAO;
-import com.asmaa.hariti.demo.dao.implementations.CreditRequestDAOImpl;
 import com.asmaa.hariti.demo.model.entities.CreditRequest;
 import com.asmaa.hariti.demo.model.entities.CreditStatus;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Named
+@ApplicationScoped
 public class CreditRequestService {
 
+    @Inject
     private CreditRequestDAO creditRequestDAO;
 
-    public CreditRequestService() {
-    }
+    // Default no-arg constructor
+    public CreditRequestService() {}
 
-    @Inject
-    public CreditRequestService(CreditRequestDAO creditRequestDAO) {
-        this.creditRequestDAO = creditRequestDAO;
-    }
-
-    private void initializeDAO() {
-        if (creditRequestDAO == null) {
-            creditRequestDAO = new CreditRequestDAOImpl();
-        }
-    }
-
+    @Transactional
     public CreditRequest createCreditRequest(CreditRequest creditRequest) {
-        initializeDAO();
         return creditRequestDAO.save(creditRequest);
     }
 
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
-        initializeDAO();
         return creditRequestDAO.getCreditRequest(creditRequestId);
     }
 
     public List<CreditRequest> getAllCreditRequests() {
-        initializeDAO();
         return creditRequestDAO.getAllCreditRequests();
     }
 
+    @Transactional
     public void deleteCreditRequest(Long creditRequestId) {
-        initializeDAO();
         creditRequestDAO.deleteCreditRequest(creditRequestId);
     }
 
@@ -56,18 +43,15 @@ public class CreditRequestService {
     }
 
     public List<CreditRequest> getCreditRequestsByStatus(CreditStatus status) {
-        initializeDAO();
         return creditRequestDAO.getCreditRequestsByStatus(status);
     }
 
+    @Transactional
     public void addStatusToCreditRequest(Long creditRequestId, CreditStatus newStatus) {
-        initializeDAO();
         creditRequestDAO.addStatusToCreditRequest(creditRequestId, newStatus);
     }
 
-
     public CreditStatus getCurrentStatus(Long creditRequestId) {
-        initializeDAO();
         return getCreditRequest(creditRequestId)
                 .map(creditRequest -> {
                     var statusHistory = creditRequest.getStatusHistory();
@@ -75,5 +59,4 @@ public class CreditRequestService {
                 })
                 .orElse(null);
     }
-
 }
