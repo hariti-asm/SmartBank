@@ -27,8 +27,8 @@
             <option value="rejected">Rejected</option>
         </select>
 
-        <button onclick="applyFilters()">Apply Filters</button>
-        <button onclick="resetFilters()">Reset Filters</button>
+        <button class ="filter filter-button " onclick="applyFilters()">Apply Filters</button>
+        <button class="reset-button" onclick="resetFilters()">Reset Filters</button>
     </div>
 
     <c:if test="${creditRequestList.size() == 0}">

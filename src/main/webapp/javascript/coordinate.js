@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function displayStoredData() {
     const fields = [
         { key: 'project', suffix: '' },
-        { key: 'status', suffix: '' },
         { key: 'amount', suffix: ' DH' },
         { key: 'duration', suffix: ' mois' },
         { key: 'monthly', suffix: ' DH', elementId: 'monthlyPayment' },
@@ -20,11 +19,7 @@ function displayStoredData() {
 
         if (element) {
             element.textContent = value + field.suffix;
-        } else {
-            console.warn(`Element with id '${elementId}' not found.`);
         }
-
-        console.log(`${field.key}:`, value);
     });
 }
 
@@ -46,8 +41,6 @@ function setupFormSubmission() {
                 input.name = field;
                 input.value = value;
                 form.appendChild(input);
-            } else {
-                console.warn(`${field} value is missing in localStorage!`);
             }
         });
     });

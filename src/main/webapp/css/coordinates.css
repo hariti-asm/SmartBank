@@ -1,0 +1,237 @@
+.steps {
+    display: flex;
+    margin-bottom: 20px;
+    position: relative;
+}
+.steps .step {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    background-color: #cccccc;
+    color: white;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.steps .step.active {
+    background-color: #ffd700;
+    position: relative;
+    transform: translateY(-5px);
+}
+.steps .step.active::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ffd700;
+}
+.steps .step:hover {
+    background-color: rgb(4, 93, 20);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    margin-bottom: 20px;
+}
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.header .breadcrumb {
+    font-size: 14px;
+    color: #666;
+}
+
+.main-content {
+    display: flex;
+    gap: 40px;
+}
+
+.form-section {
+    flex: 2;
+}
+.form-section .steps {
+    display: flex;
+    margin-bottom: 20px;
+}
+.form-section .steps .step {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+.form-section .steps .step.active {
+    background-color: #f7e752;
+}
+.form-section .steps .step:first-child {
+    background-color: #02afbc;
+    color: white;
+}
+.form-section .steps .step:last-child {
+    background-color: #b3b3b3;
+}
+.form-section form .form-group {
+    margin-bottom: 15px;
+}
+.form-section form .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 16px;
+}
+.form-section form .form-group input::placeholder {
+    color: #999;
+}
+.form-section form .captcha {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+.form-section form .submit-btn {
+    background-color: #02afbc;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
+}
+
+.summary-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    margin: 20px auto;
+}
+
+.summary-section h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.summary-content {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.summary-content p {
+    color: #02AFBC;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.project-type {
+    color: #333;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.summary-item .label {
+    color: #666;
+}
+
+.summary-item .value {
+    color: #02AFBC;
+    font-weight: bold;
+}
+
+.summary-section::after {
+    content: "";
+    display: block;
+    height: 20px;
+    background-image: radial-gradient(circle at 10px -5px, transparent 12px, white 13px);
+    background-size: 20px 20px;
+    background-position: -10px -10px;
+    margin-top: -10px;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #666;
+}
+
+.error-alert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 16px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 30%;
+}
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #7a0a17;
+    margin-bottom: 10px;
+    border: 1px solid #f9bdc4;
+    background-color: #fbd0d5;
+    border-radius: 5px;
+}
+
+.error-alert-visible {
+    display: block;
+}
+
+.close-btn {
+    background-color: #02afbc;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 100px;
+    float: right;
+}
+
+/*# sourceMappingURL=cordinates.css.map */

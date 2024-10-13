@@ -16,12 +16,17 @@ public class CreditRequestService {
     @Inject
     private CreditRequestDAO creditRequestDAO;
 
-    // Default no-arg constructor
     public CreditRequestService() {}
 
     @Transactional
     public CreditRequest createCreditRequest(CreditRequest creditRequest) {
         return creditRequestDAO.save(creditRequest);
+    }
+    public Double calculerMensualite(Long capital, Long dureeEnMois) {
+        double tauxAnnuel = 0.12;
+        double tauxMensuel = tauxAnnuel / 12;
+        double mensualite = (capital * tauxMensuel) / (1 - Math.pow(1 + tauxMensuel, -dureeEnMois));
+        return Math.round(mensualite * 100.0) / 100.0;
     }
 
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {

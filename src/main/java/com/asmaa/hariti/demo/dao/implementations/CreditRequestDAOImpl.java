@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,28 +26,46 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
             transaction = entityManager.getTransaction();
             transaction.begin();
 
-            if (creditRequest.getStatusHistory() != null && !creditRequest.getStatusHistory().isEmpty()) {
-                for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
-                    CreditStatus status = statusHistory.getStatus();
+            // Check if this is a new credit request
+            boolean isNewRequest = creditRequest.getId() == null;
 
-                    CreditStatus newStatus = new CreditStatus();
-                    newStatus.setName(status.getName());
-                    entityManager.persist(newStatus);
+            if (isNewRequest) {
+                CreditStatus pendingStatus = new CreditStatus();
+                pendingStatus.setName("Pending");
+                entityManager.persist(pendingStatus);
 
-                    statusHistory.setStatus(newStatus);
-                    statusHistory.setDescription("Status changed to " + status.getName());
+                CreditRequestStatusHistory newStatusHistory = new CreditRequestStatusHistory();
+                newStatusHistory.setStatus(pendingStatus);
+                newStatusHistory.setDescription("Initial status set to Pending");
+                newStatusHistory.setUpdatedAt(LocalDateTime.now());
+                newStatusHistory.setCreditRequest(creditRequest);
+
+                if (creditRequest.getStatusHistory() == null) {
+                    creditRequest.setStatusHistory(new ArrayList<>());
                 }
-            }
+                creditRequest.getStatusHistory().add(newStatusHistory);
 
-            if (creditRequest.getId() == null) {
+                // Persist the new credit request
                 entityManager.persist(creditRequest);
             } else {
+                if (creditRequest.getStatusHistory() != null && !creditRequest.getStatusHistory().isEmpty()) {
+                    for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
+                        CreditStatus status = statusHistory.getStatus();
+
+                        CreditStatus newStatus = new CreditStatus();
+                        newStatus.setName(status.getName());
+                        entityManager.persist(newStatus);
+
+                        statusHistory.setStatus(newStatus);
+                        statusHistory.setDescription("Status changed to " + status.getName());
+                    }
+                }
+
                 creditRequest = entityManager.merge(creditRequest);
             }
 
             for (CreditRequestStatusHistory statusHistory : creditRequest.getStatusHistory()) {
                 if (statusHistory.getId() == null) {
-                    statusHistory.setCreditRequest(creditRequest);
                     entityManager.persist(statusHistory);
                 } else {
                     entityManager.merge(statusHistory);
@@ -62,7 +81,6 @@ public class CreditRequestDAOImpl implements CreditRequestDAO {
         }
         return creditRequest;
     }
-
     @Override
     public Optional<CreditRequest> getCreditRequest(Long creditRequestId) {
         CreditRequest creditRequest = entityManager.find(CreditRequest.class, creditRequestId);

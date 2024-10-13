@@ -52,11 +52,9 @@ public class CreditRequest {
     @Column(name = "amount", nullable = true, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    // No @Temporal here, LocalDate is automatically mapped
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDate createdAt;
 
-    // Automatically set created_at to the current local date
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDate.now();
